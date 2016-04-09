@@ -29,6 +29,7 @@ public class LibrosRepositorio {
                                 rs.getString("sinopsis")
                         ));
             }
+            this._persistencia.cerrarConexion();
             return lstLibros;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
@@ -42,7 +43,7 @@ public class LibrosRepositorio {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "SELECT * FROM Libro WHERE idlibro = " + id;
             ResultSet rs = stmt.executeQuery(sql);
-            
+            this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Libro(
                                 rs.getString("idlibro"), 
@@ -69,7 +70,9 @@ public class LibrosRepositorio {
             String sql = "INSERT INTO Libro (idlibro, titulo, anio, edicion, sinopsis, ideditorial, idAutor)";
             sql += " VALUES('" + id + "','" + titulo + "'," + anio + ",'" + edicion + "','";
             sql += sinopsis + "'," + idEditorial + "," + idAutor + ");";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -86,7 +89,9 @@ public class LibrosRepositorio {
             sql += "sinopsis = '" + libro.getSinopsis() + "',";
             sql += "ideditorial = " + libro.getIdEditorial() + ",";
             sql += "idAutor = " + libro.getIdAutor() + ");";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -103,10 +108,14 @@ public class LibrosRepositorio {
             int count = rsCount.getInt(0);
 
             if (count > 0){
+                this._persistencia.cerrarConexion();
                 return 0;
             } else {
                 String sql = "DELETE Libro Where idlibro = " + id + ";";
-                return stmt.executeUpdate(sql);
+                
+                int result = stmt.executeUpdate(sql);
+                this._persistencia.cerrarConexion();
+                return result;
             }
             
         } catch (Exception e){

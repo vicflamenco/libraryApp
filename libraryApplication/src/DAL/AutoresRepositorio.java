@@ -22,6 +22,7 @@ public class AutoresRepositorio {
             while (rs.next()){
                 lstAutores.add(new Autor(rs.getInt("idautor"), rs.getString("nombre"), rs.getString("acerca_de")));
             }
+            this._persistencia.cerrarConexion();
             return lstAutores;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
@@ -36,6 +37,7 @@ public class AutoresRepositorio {
             String sql = "SELECT * FROM autor WHERE idautor = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             
+            this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Autor(rs.getInt("idautor"), rs.getString("nombre"), rs.getString("acerca_de"));
             } else {
@@ -53,7 +55,9 @@ public class AutoresRepositorio {
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "INSERT INTO Autor (nombre, acerca_de) VALUES ('" + nombre + "','" + acerca_de + "');";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -66,7 +70,9 @@ public class AutoresRepositorio {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "UPDATE Autor SET nombre = '" + nombre + "', acerca_de = '";
             sql += acerca_de + "' WHERE idautor = " + id + ";";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -83,10 +89,13 @@ public class AutoresRepositorio {
             int count = rsCount.getInt(0);
 
             if (count > 0){
+                this._persistencia.cerrarConexion();
                 return 0;
             } else {
                 String sql = "DELETE Autor Where idautor = " + id + ";";
-                return stmt.executeUpdate(sql);
+                int result = stmt.executeUpdate(sql);
+                this._persistencia.cerrarConexion();
+                return result;
             }
             
         } catch (Exception e){

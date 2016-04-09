@@ -24,11 +24,15 @@ public class UsuarioRolesRepositorio {
             rsCount.first();
             
             if (rsCount.getInt(0) > 0){
+                this._persistencia.cerrarConexion();
                 return false;
             } else {
                 sql = "INSERT INTO usuario_rol(idusuario, idrol) VALUES ('";
                 sql += usuario.getIdUsuario() + "','" + rol.getIdRol() + ");";
-                return stmt.executeUpdate(sql) > 0;
+                
+                boolean result = stmt.executeUpdate(sql) > 0;
+                this._persistencia.cerrarConexion();
+                return result;
             }
 
         } catch (Exception e){
@@ -48,11 +52,14 @@ public class UsuarioRolesRepositorio {
             rsCount.first();
             
             if (rsCount.getInt(0) <= 0){
+                this._persistencia.cerrarConexion();
                 return false;
             } else {
                 sql = "DELETE usuario_rol WHERE idusuario = '";
                 sql += usuario.getIdUsuario() + "' AND idrol = '" + rol.getIdRol() + ";";
-                return stmt.executeUpdate(sql) > 0;
+                boolean result = stmt.executeUpdate(sql) > 0;
+                this._persistencia.cerrarConexion();
+                return result;
             }
 
         } catch (Exception e){

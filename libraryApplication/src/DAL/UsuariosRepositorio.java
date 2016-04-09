@@ -29,6 +29,7 @@ public class UsuariosRepositorio {
                                 rs.getBoolean("activo")
                         ));
             }
+            this._persistencia.cerrarConexion();
             return lstUsuarios;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
@@ -43,6 +44,7 @@ public class UsuariosRepositorio {
             String sql = "SELECT * FROM usuario WHERE idusuario = '" + id + "';";
             ResultSet rs = stmt.executeQuery(sql);
             
+            this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Usuario(
                     rs.getString("idusuario"), 
@@ -67,7 +69,10 @@ public class UsuariosRepositorio {
             String sql = "INSERT INTO usuario (idusuario,nombres,clave,correo,activo) VALUES ('";
             sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + usuario.getClave();
             sql += "','" + usuario.getCorreo() + "'," + usuario.isActivo() + ");";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
+            
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -83,7 +88,9 @@ public class UsuariosRepositorio {
             sql += "', correo = '" + usuario.getCorreo();
             sql += "', activo = " + usuario.isActivo();
             sql += " WHERE idusuario = '" + usuario.getIdUsuario() + "';";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -104,10 +111,13 @@ public class UsuariosRepositorio {
             int countPrestamos = rsCountPrestamos.getInt(0);
 
             if (countRoles > 0 || countPrestamos > 0){
+                this._persistencia.cerrarConexion();
                 return 0;
             } else {
                 String sql = "DELETE usuario Where idusuario = " + id + ";";
-                return stmt.executeUpdate(sql);
+                int result = stmt.executeUpdate(sql);
+                this._persistencia.cerrarConexion();
+                return result;
             }
             
         } catch (Exception e){

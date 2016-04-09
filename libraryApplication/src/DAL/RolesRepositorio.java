@@ -22,6 +22,7 @@ public class RolesRepositorio {
             while (rs.next()){
                 lstRoles.add(new Rol(rs.getInt("idrol"), rs.getString("nombre"), rs.getString("descripcion")));
             }
+            this._persistencia.cerrarConexion();
             return lstRoles;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
@@ -36,6 +37,7 @@ public class RolesRepositorio {
             String sql = "SELECT * FROM Rol WHERE idrol = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             
+            this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Rol(rs.getInt("idrol"), rs.getString("nombre"), rs.getString("descripcion"));
             } else {
@@ -54,7 +56,9 @@ public class RolesRepositorio {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "INSERT INTO Rol (nombre, descripcion) VALUES ('" + rol.getNombre();
             sql += "','" + rol.getDescripcion() + "');";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -67,7 +71,9 @@ public class RolesRepositorio {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "UPDATE rol SET nombre = '" + rol.getNombre() + "', descripcion = '";
             sql += rol.getDescripcion() + "' WHERE idrol = " + rol.getIdRol() + ";";
-            return stmt.executeUpdate(sql);
+            int result = stmt.executeUpdate(sql);
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
@@ -83,10 +89,13 @@ public class RolesRepositorio {
             int count = rsCount.getInt(0);
 
             if (count > 0){
+                this._persistencia.cerrarConexion();
                 return 0;
             } else {
                 String sql = "DELETE Rol Where idrol = " + id + ";";
-                return stmt.executeUpdate(sql);
+                int result = stmt.executeUpdate(sql);
+                this._persistencia.cerrarConexion();
+                return result;
             }
             
         } catch (Exception e){
