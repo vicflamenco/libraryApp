@@ -20,8 +20,14 @@ public class Persistencia {
         }
     }
     
-    public Statement obtenerSentencia() throws SQLException{
-        return this.con.createStatement();
+    public Statement obtenerSentencia() {
+        try {
+            return this.con.createStatement();    
+        } catch (Exception e){
+            System.out.println("Error al obtener objeto Statement: " + e.getMessage());
+            return null;
+        }
+        
     }
     
     public void cerrarConexion(){

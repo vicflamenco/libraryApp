@@ -1,6 +1,5 @@
 package DAL;
 
-import Modelos.Libro;
 import Modelos.Prestamo;
 import java.sql.*;
 import java.util.*;

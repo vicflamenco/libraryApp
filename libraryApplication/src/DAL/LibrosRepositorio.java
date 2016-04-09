@@ -16,18 +16,25 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT * FROM Libro";
+            String sql = "SELECT l.*, a.nombre, e.nombre FROM libro l";
+            sql += " INNER JOIN autor a ON a.idautor = l.idautor ";
+            sql += " INNER JOIN editorial e ON e.ideditorial = l.ideditorial;";
+            
             ResultSet rs = stmt.executeQuery(sql);
             List<Libro> lstLibros = new ArrayList<>();
             while (rs.next()){
                 lstLibros.add(
-                        new Libro(
-                                rs.getString("idlibro"), 
-                                rs.getString("titulo"), 
-                                rs.getInt("anio"),
-                                rs.getString("edicion"),
-                                rs.getString("sinopsis")
-                        ));
+                    new Libro(
+                        rs.getString("idlibro"), 
+                        rs.getString("titulo"), 
+                        rs.getInt("anio"),
+                        rs.getString("edicion"),
+                        rs.getInt("ideditorial"),
+                        rs.getInt("idautor"),
+                        rs.getString("sinopsis"),
+                        rs.getString("nombreAutor"),
+                        rs.getString("nombreEditorial")
+                ));
             }
             this._persistencia.cerrarConexion();
             return lstLibros;
@@ -41,17 +48,24 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT * FROM Libro WHERE idlibro = " + id;
+            String sql = "SELECT l.*, a.nombre, e.nombre FROM libro l";
+            sql += "INNER JOIN autor a ON a.idautor = l.idautor ";
+            sql += "INNER JOIN editorial e ON e.ideditorial = l.ideditorial";
+            sql += " WHERE l.idlibro = " + id + ";";
             ResultSet rs = stmt.executeQuery(sql);
             this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Libro(
-                                rs.getString("idlibro"), 
-                                rs.getString("titulo"), 
-                                rs.getInt("anio"),
-                                rs.getString("edicion"),
-                                rs.getString("sinopsis")
-                        );
+                    rs.getString("idlibro"), 
+                    rs.getString("titulo"), 
+                    rs.getInt("anio"),
+                    rs.getString("edicion"),
+                    rs.getInt("ideditorial"),
+                    rs.getInt("idautor"),
+                    rs.getString("sinopsis"),
+                    rs.getString("nombreAutor"),
+                    rs.getString("nombreEditorial")
+                );
             } else {
                 return null;
             }

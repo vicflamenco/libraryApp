@@ -10,12 +10,21 @@ public class Libro {
     private int idEditorial;
     private int idAutor;
     
-    public Libro(String id, String titulo, int anio, String edicion, String sinopsis){
+    private String nombreAutor;
+    private String nombreEditorial;
+    
+    public Libro(String id, String titulo, int anio, String edicion, 
+            int idEditorial, int idAutor, String sinopsis, 
+            String nombreAutor, String nombreEditorial){
         this.idLibro = id;
         this.titulo = titulo;
         this.anio = anio;
         this.edicion = edicion;
         this.sinopsis = sinopsis;
+        this.idEditorial = idEditorial;
+        this.idAutor = idAutor;
+        this.nombreAutor = nombreAutor;
+        this.nombreEditorial = nombreEditorial;
     }
 
     public String getIdLibro() {
@@ -73,5 +82,20 @@ public class Libro {
     public void setIdAutor(int idAutor) {
         this.idAutor = idAutor;
     }
-    
+
+    public String getNombreAutor() {
+        return nombreAutor;
+    }
+
+    public void setNombreAutor(String nombreAutor) {
+        this.nombreAutor = nombreAutor;
+    }
+
+    public String getNombreEditorial() {
+        return nombreEditorial;
+    }
+
+    public void setNombreEditorial(String nombreEditorial) {
+        this.nombreEditorial = nombreEditorial;
+    }
 }
