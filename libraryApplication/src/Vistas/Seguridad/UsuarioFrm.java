@@ -7,10 +7,8 @@ package Vistas.Seguridad;
 
 import DAL.UsuariosRepositorio;
 import Modelos.*;
-<<<<<<< HEAD
-=======
 import java.util.List;
->>>>>>> refs/remotes/origin/seguridad
+
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 
@@ -21,11 +19,9 @@ import javax.swing.event.ListSelectionEvent;
 public class UsuarioFrm extends javax.swing.JFrame {
     BeanTableModel<Usuario> model;
     UsuariosRepositorio usuariosRepo;
-<<<<<<< HEAD
-    int estado = 0;
-=======
+
     int estado = -1;
->>>>>>> refs/remotes/origin/seguridad
+
     
     /**
      * Creates new form UsuarioFrm
@@ -41,7 +37,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         RXTable.reorderColumns(tblData, "IdUsuario","Nombres","Correo", "Activo");
         
         DeshabilitarControles();
-<<<<<<< HEAD
+
         btnModificar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnGuardar.setEnabled(false);
@@ -64,12 +60,12 @@ public class UsuarioFrm extends javax.swing.JFrame {
             } catch (Exception e) {
                 
             }
-=======
+
         resetBotones(-1);
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
            LoadDetail();
->>>>>>> refs/remotes/origin/seguridad
+
         });
         
         LoadData();
@@ -106,10 +102,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-<<<<<<< HEAD
-=======
         btnRoles = new javax.swing.JButton();
->>>>>>> refs/remotes/origin/seguridad
         jPanel3 = new javax.swing.JPanel();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
@@ -274,11 +267,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-<<<<<<< HEAD
-        gridBagConstraints.gridx = 2;
-=======
         gridBagConstraints.gridx = 3;
->>>>>>> refs/remotes/origin/seguridad
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnCerrar, gridBagConstraints);
 
@@ -294,21 +283,16 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel2.add(btnGuardar, gridBagConstraints);
 
         btnCancelar.setText("Cancelar");
-<<<<<<< HEAD
-=======
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
->>>>>>> refs/remotes/origin/seguridad
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnCancelar, gridBagConstraints);
 
-<<<<<<< HEAD
-=======
         btnRoles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnRoles.setText("Roles");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -316,7 +300,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnRoles, gridBagConstraints);
 
->>>>>>> refs/remotes/origin/seguridad
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -340,10 +323,8 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel3.add(btnModificar, gridBagConstraints);
 
         btnNuevo.setText("Nuevo");
-<<<<<<< HEAD
-=======
+
         btnNuevo.setEnabled(this.estado == 0);
->>>>>>> refs/remotes/origin/seguridad
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -413,7 +394,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-<<<<<<< HEAD
+
         txtIdUsuario.setText("");
         txtNombres.setText("");
         txtCorreo.setText("");
@@ -431,17 +412,17 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCancelar.setEnabled(true);
         
         estado = 1;
-=======
+
         ResetInput();
         HabilitarControles();
         
         resetBotones(1);
->>>>>>> refs/remotes/origin/seguridad
+
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         HabilitarControles();
-<<<<<<< HEAD
+
         txtIdUsuario.setEnabled(false);
         
         btnNuevo.setEnabled(false);
@@ -453,11 +434,11 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCancelar.setEnabled(true);
         
         estado = 2;
-=======
+
         txtIdUsuario.setEditable(false);
         
         resetBotones(2);
->>>>>>> refs/remotes/origin/seguridad
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -469,11 +450,11 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
-<<<<<<< HEAD
+
                     resetBotones();
-=======
+
                     resetBotones(0);
->>>>>>> refs/remotes/origin/seguridad
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -486,11 +467,11 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
-<<<<<<< HEAD
+
                     resetBotones();
-=======
+
                     resetBotones(0);
->>>>>>> refs/remotes/origin/seguridad
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -531,13 +512,13 @@ public class UsuarioFrm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
-<<<<<<< HEAD
-=======
+
+
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         LoadDetail();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
->>>>>>> refs/remotes/origin/seguridad
+
     /**
      * @param args the command line arguments
      */
@@ -580,10 +561,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
-<<<<<<< HEAD
-=======
     private javax.swing.JButton btnRoles;
->>>>>>> refs/remotes/origin/seguridad
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -611,9 +589,9 @@ public class UsuarioFrm extends javax.swing.JFrame {
 
     private void LoadData() {
         model.removeAllRows();
-<<<<<<< HEAD
+
         model.addRows(usuariosRepo.Leer());
-=======
+
         List<Usuario> data = usuariosRepo.Leer();
         if(data != null) model.addRows(data);
         else
@@ -640,7 +618,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             } finally{
                 DeshabilitarControles();
             }
->>>>>>> refs/remotes/origin/seguridad
+
     }
     
     private void HabilitarControles(){
@@ -661,7 +639,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         tgInactivo.setEnabled(false);
     }
     
-<<<<<<< HEAD
+
     private void resetBotones(){
         btnNuevo.setEnabled(true);
         btnModificar.setEnabled(true);
@@ -670,7 +648,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
         btnCerrar.setEnabled(true);
-=======
+
     private void resetBotones(int estado){
         this.estado = estado;
         
@@ -691,6 +669,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         txtCorreo.setText("");
         txtClave.setText("");
         tgActivo.setSelected(true);
->>>>>>> refs/remotes/origin/seguridad
+
     }
 }
