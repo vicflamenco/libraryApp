@@ -14,10 +14,9 @@ public class UsuariosRepositorio {
     
     public List<Usuario> Leer(){
         
-        try {
-            Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT * FROM Usuario";
-            ResultSet rs = stmt.executeQuery(sql);
+        try {          
+            _persistencia.abrirConexion();
+            ResultSet rs = _persistencia.ejecutarConsulta( "SELECT * FROM Usuario;");
             List<Usuario> lstUsuarios = new ArrayList<>();
             while (rs.next()){
                 lstUsuarios.add(
@@ -29,22 +28,22 @@ public class UsuariosRepositorio {
                                 rs.getBoolean("activo")
                         ));
             }
-            this._persistencia.cerrarConexion();
             return lstUsuarios;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return null;
+        }
+        finally{
+            _persistencia.cerrarConexion();
         }
     }
     
     public Usuario Leer(String id){
         
         try {
-            Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT * FROM usuario WHERE idusuario = '" + id + "';";
-            ResultSet rs = stmt.executeQuery(sql);
+            _persistencia.abrirConexion();
+            ResultSet rs = _persistencia.ejecutarConsulta("SELECT * FROM usuario WHERE idusuario = '" + id + "';");
             
-            this._persistencia.cerrarConexion();
             if (rs.first()){
                 return new Usuario(
                     rs.getString("idusuario"), 
@@ -60,21 +59,24 @@ public class UsuariosRepositorio {
             System.out.println("Error en consulta: " + e.getMessage());
             return null;
         }
+        finally{
+            _persistencia.cerrarConexion();
+        }
     }
     
     public int Insertar(Usuario usuario){
         
         try {
-            Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "INSERT INTO usuario (idusuario,nombres,clave,correo,activo) VALUES ('";
             sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + usuario.getClave();
             sql += "','" + usuario.getCorreo() + "'," + usuario.isActivo() + ");";
-            int result = stmt.executeUpdate(sql);
-            this._persistencia.cerrarConexion();
+            int result = _persistencia.ejectutarSentencia(sql);
+            
             return result;
             
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
+            
             return -1;
         }
     }
@@ -82,41 +84,45 @@ public class UsuariosRepositorio {
     public int Actualizar(Usuario usuario){
         
         try {
-            Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "UPDATE Usuario SET nombres = '" + usuario.getNombres();
-            sql += "', clave = '" + usuario.getClave();
+            sql += (usuario.getClave() != null) ?  "', clave = '" + usuario.getClave() : "";
             sql += "', correo = '" + usuario.getCorreo();
             sql += "', activo = " + usuario.isActivo();
             sql += " WHERE idusuario = '" + usuario.getIdUsuario() + "';";
-            int result = stmt.executeUpdate(sql);
-            this._persistencia.cerrarConexion();
+
+            int result = _persistencia.ejectutarSentencia(sql);
+            
             return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
+            
             return -1;
         }
     }
     
-    public int Eliminar(int id){
+    public int Eliminar(String id){
         try {
-            Statement stmt = this._persistencia.obtenerSentencia();
+            _persistencia.abrirConexion();
             
-            ResultSet rsCountRoles = stmt.executeQuery("SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + id + "';");
+            ResultSet rsCountRoles = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + id + "';");
             rsCountRoles.first();
-            
-            ResultSet rsCountPrestamos = stmt.executeQuery("SELECT COUNT(*) FROM prestamo WHERE idusuario = '" + id + "';");
+            System.out.println("a");
+            ResultSet rsCountPrestamos = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM prestamo WHERE idusuario = '" + id + "';");
             rsCountPrestamos.first();
+            System.out.println("b");
             
-            int countRoles = rsCountRoles.getInt(0);
-            int countPrestamos = rsCountPrestamos.getInt(0);
+            int countRoles = rsCountRoles.getInt(1);
+            int countPrestamos = rsCountPrestamos.getInt(1);
 
-            if (countRoles > 0 || countPrestamos > 0){
-                this._persistencia.cerrarConexion();
+            this._persistencia.cerrarConexion();
+            
+            System.out.println("c");
+            if (countRoles > 0 || countPrestamos > 0){    
                 return 0;
             } else {
-                String sql = "DELETE usuario Where idusuario = " + id + ";";
-                int result = stmt.executeUpdate(sql);
-                this._persistencia.cerrarConexion();
+                String sql = "DELETE FROM usuario WHERE idusuario = '" + id + "';";
+                int result = _persistencia.ejectutarSentencia(sql);
+                
                 return result;
             }
             
