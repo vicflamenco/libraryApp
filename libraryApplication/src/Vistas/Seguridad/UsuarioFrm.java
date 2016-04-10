@@ -41,7 +41,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
            LoadDetail();
-
         });
         
         LoadData();
@@ -369,25 +368,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-
-        txtIdUsuario.setText("");
-        txtNombres.setText("");
-        txtCorreo.setText("");
-        txtClave.setText("");
-        tgActivo.setSelected(true);
-
-        HabilitarControles();
-        
-        btnNuevo.setEnabled(false);
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCerrar.setEnabled(false);
-        
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        
-        estado = 1;
-
         ResetInput();
         HabilitarControles();
         
@@ -397,19 +377,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         HabilitarControles();
-
-        txtIdUsuario.setEnabled(false);
-        
-        btnNuevo.setEnabled(false);
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCerrar.setEnabled(false);
-        
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        
-        estado = 2;
- 
         txtIdUsuario.setEditable(false);
         
         resetBotones(2);
@@ -424,12 +391,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
-                    
-
-                    resetBotones();
-
-                    resetBotones(0);
-
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -441,12 +402,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
                 {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
-                    
-
-                    resetBotones();
-
-                    resetBotones(0);
-
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -571,6 +526,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El servidor de base datos no se encuentra disponible");
         
         ResetInput();
+        resetBotones(-1);
     }
     
     private void LoadDetail(){
@@ -612,17 +568,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         tgInactivo.setEnabled(false);
     }
     
-
-    private void resetBotones(){
-        btnNuevo.setEnabled(true);
-        btnModificar.setEnabled(true);
-        btnEliminar.setEnabled(true);
-        
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        btnCerrar.setEnabled(true);
-    }
-
     private void resetBotones(int estado){
         this.estado = estado;
         
