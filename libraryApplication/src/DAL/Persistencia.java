@@ -2,6 +2,7 @@ package DAL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -13,10 +14,37 @@ public class Persistencia {
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "");
+            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
             System.out.println("Error de conexión a la BD: " + e.getMessage());
+        }
+    }
+    
+    public ResultSet ejecutarConsulta(String sql){
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            return rs;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public int ejectutarSentencia(String sql){
+        try {
+            abrirConexion();
+            Statement stmt = con.createStatement();
+            int resultado = stmt.executeUpdate(sql);
+            
+            cerrarConexion();
+            
+            return resultado;
+        } catch (Exception e) {
+            cerrarConexion();
+            
+            return -1;
         }
     }
     
@@ -37,6 +65,21 @@ public class Persistencia {
            }
         } catch (Exception e) {
             System.out.println("Error al cerrar la BD: " + e.getMessage());
+        }
+    }
+    
+    public void abrirConexion() throws SQLException{
+        if (con != null && !con.isClosed())
+        {
+            return;
+        }
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
+            
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
+            System.out.println("Error de conexión a la BD: " + e.getMessage());
         }
     }
 }
