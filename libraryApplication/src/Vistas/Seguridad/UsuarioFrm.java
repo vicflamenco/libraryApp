@@ -37,30 +37,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         RXTable.reorderColumns(tblData, "IdUsuario","Nombres","Correo", "Activo");
         
         DeshabilitarControles();
-
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        
-        tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            try {
-                Usuario usuario = model.getRow(tblData.getSelectedRow());
-                
-                txtIdUsuario.setText(usuario.getIdUsuario());
-                txtClave.setText(usuario.getClave());
-                txtNombres.setText(usuario.getNombres());
-                txtCorreo.setText(usuario.getCorreo());
-                tgActivo.setSelected(usuario.isActivo());
-                tgInactivo.setSelected(!usuario.isActivo());
-                
-                DeshabilitarControles();
-                btnModificar.setEnabled(true);
-                btnEliminar.setEnabled(true);
-            } catch (Exception e) {
-                
-            }
-
         resetBotones(-1);
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
@@ -323,7 +299,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel3.add(btnModificar, gridBagConstraints);
 
         btnNuevo.setText("Nuevo");
-
         btnNuevo.setEnabled(this.estado == 0);
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -434,7 +409,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCancelar.setEnabled(true);
         
         estado = 2;
-
+ 
         txtIdUsuario.setEditable(false);
         
         resetBotones(2);
@@ -590,8 +565,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
     private void LoadData() {
         model.removeAllRows();
 
-        model.addRows(usuariosRepo.Leer());
-
         List<Usuario> data = usuariosRepo.Leer();
         if(data != null) model.addRows(data);
         else
@@ -648,6 +621,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnGuardar.setEnabled(false);
         btnCancelar.setEnabled(false);
         btnCerrar.setEnabled(true);
+    }
 
     private void resetBotones(int estado){
         this.estado = estado;
