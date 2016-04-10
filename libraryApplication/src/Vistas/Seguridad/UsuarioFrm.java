@@ -7,6 +7,7 @@ package Vistas.Seguridad;
 
 import DAL.UsuariosRepositorio;
 import Modelos.*;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 
@@ -17,7 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 public class UsuarioFrm extends javax.swing.JFrame {
     BeanTableModel<Usuario> model;
     UsuariosRepositorio usuariosRepo;
-    int estado = 0;
+    int estado = -1;
     
     /**
      * Creates new form UsuarioFrm
@@ -33,28 +34,10 @@ public class UsuarioFrm extends javax.swing.JFrame {
         RXTable.reorderColumns(tblData, "IdUsuario","Nombres","Correo", "Activo");
         
         DeshabilitarControles();
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
+        resetBotones(-1);
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-            try {
-                Usuario usuario = model.getRow(tblData.getSelectedRow());
-                
-                txtIdUsuario.setText(usuario.getIdUsuario());
-                txtClave.setText(usuario.getClave());
-                txtNombres.setText(usuario.getNombres());
-                txtCorreo.setText(usuario.getCorreo());
-                tgActivo.setSelected(usuario.isActivo());
-                tgInactivo.setSelected(!usuario.isActivo());
-                
-                DeshabilitarControles();
-                btnModificar.setEnabled(true);
-                btnEliminar.setEnabled(true);
-            } catch (Exception e) {
-                
-            }
+           LoadDetail();
         });
         
         LoadData();
@@ -91,6 +74,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnRoles = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
@@ -255,7 +239,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnCerrar, gridBagConstraints);
 
@@ -271,10 +255,22 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel2.add(btnGuardar, gridBagConstraints);
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnCancelar, gridBagConstraints);
+
+        btnRoles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnRoles.setText("Roles");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(btnRoles, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -299,6 +295,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel3.add(btnModificar, gridBagConstraints);
 
         btnNuevo.setText("Nuevo");
+        btnNuevo.setEnabled(this.estado == 0);
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -368,38 +365,17 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        txtIdUsuario.setText("");
-        txtNombres.setText("");
-        txtCorreo.setText("");
-        txtClave.setText("");
-        tgActivo.setSelected(true);
-
+        ResetInput();
         HabilitarControles();
         
-        btnNuevo.setEnabled(false);
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCerrar.setEnabled(false);
-        
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        
-        estado = 1;
+        resetBotones(1);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         HabilitarControles();
-        txtIdUsuario.setEnabled(false);
+        txtIdUsuario.setEditable(false);
         
-        btnNuevo.setEnabled(false);
-        btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
-        btnCerrar.setEnabled(false);
-        
-        btnGuardar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-        
-        estado = 2;
+        resetBotones(2);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -411,7 +387,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
-                    resetBotones();
+                    resetBotones(0);
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -424,7 +400,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
-                    resetBotones();
+                    resetBotones(0);
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -464,6 +440,10 @@ public class UsuarioFrm extends javax.swing.JFrame {
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        LoadDetail();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -507,6 +487,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnRoles;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -534,7 +515,32 @@ public class UsuarioFrm extends javax.swing.JFrame {
 
     private void LoadData() {
         model.removeAllRows();
-        model.addRows(usuariosRepo.Leer());
+        List<Usuario> data = usuariosRepo.Leer();
+        if(data != null) model.addRows(data);
+        else
+            JOptionPane.showMessageDialog(null, "El servidor de base datos no se encuentra disponible");
+        
+        ResetInput();
+    }
+    
+    private void LoadDetail(){
+         try {
+                Usuario usuario = model.getRow(tblData.getSelectedRow());
+                
+                txtIdUsuario.setText(usuario.getIdUsuario());
+                txtClave.setText(usuario.getClave());
+                txtNombres.setText(usuario.getNombres());
+                txtCorreo.setText(usuario.getCorreo());
+                tgActivo.setSelected(usuario.isActivo());
+                tgInactivo.setSelected(!usuario.isActivo());
+                
+                resetBotones(0);
+            } catch (Exception e) {
+                resetBotones(-1);
+                ResetInput();
+            } finally{
+                DeshabilitarControles();
+            }
     }
     
     private void HabilitarControles(){
@@ -555,13 +561,25 @@ public class UsuarioFrm extends javax.swing.JFrame {
         tgInactivo.setEnabled(false);
     }
     
-    private void resetBotones(){
-        btnNuevo.setEnabled(true);
-        btnModificar.setEnabled(true);
-        btnEliminar.setEnabled(true);
+    private void resetBotones(int estado){
+        this.estado = estado;
         
-        btnGuardar.setEnabled(false);
-        btnCancelar.setEnabled(false);
-        btnCerrar.setEnabled(true);
+        btnNuevo.setEnabled(estado <= 0);
+        btnModificar.setEnabled(estado == 0);
+        btnEliminar.setEnabled(estado == 0);
+        
+        btnGuardar.setEnabled(estado == 1 || estado == 2);
+        btnCancelar.setEnabled(btnGuardar.isEnabled());
+        btnCerrar.setEnabled(estado <= 0);
+        
+        btnRoles.setEnabled(estado == 0);
+    }
+
+    private void ResetInput() {
+        txtIdUsuario.setText("");
+        txtNombres.setText("");
+        txtCorreo.setText("");
+        txtClave.setText("");
+        tgActivo.setSelected(true);
     }
 }
