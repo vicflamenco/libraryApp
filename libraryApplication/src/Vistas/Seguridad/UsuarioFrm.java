@@ -8,6 +8,7 @@ package Vistas.Seguridad;
 import DAL.UsuariosRepositorio;
 import Modelos.*;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 
@@ -18,7 +19,9 @@ import javax.swing.event.ListSelectionEvent;
 public class UsuarioFrm extends javax.swing.JFrame {
     BeanTableModel<Usuario> model;
     UsuariosRepositorio usuariosRepo;
+
     int estado = -1;
+
     
     /**
      * Creates new form UsuarioFrm
@@ -38,6 +41,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
            LoadDetail();
+
         });
         
         LoadData();
@@ -365,17 +369,51 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+
+        txtIdUsuario.setText("");
+        txtNombres.setText("");
+        txtCorreo.setText("");
+        txtClave.setText("");
+        tgActivo.setSelected(true);
+
+        HabilitarControles();
+        
+        btnNuevo.setEnabled(false);
+        btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnCerrar.setEnabled(false);
+        
+        btnGuardar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        
+        estado = 1;
+
         ResetInput();
         HabilitarControles();
         
         resetBotones(1);
+
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         HabilitarControles();
+
+        txtIdUsuario.setEnabled(false);
+        
+        btnNuevo.setEnabled(false);
+        btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnCerrar.setEnabled(false);
+        
+        btnGuardar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        
+        estado = 2;
+ 
         txtIdUsuario.setEditable(false);
         
         resetBotones(2);
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -387,7 +425,11 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
+
+                    resetBotones();
+
                     resetBotones(0);
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -400,7 +442,11 @@ public class UsuarioFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
                     LoadData();
                     
+
+                    resetBotones();
+
                     resetBotones(0);
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Ocurrio un error");
@@ -441,9 +487,12 @@ public class UsuarioFrm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+
+
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         LoadDetail();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -515,6 +564,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
 
     private void LoadData() {
         model.removeAllRows();
+
         List<Usuario> data = usuariosRepo.Leer();
         if(data != null) model.addRows(data);
         else
@@ -541,6 +591,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             } finally{
                 DeshabilitarControles();
             }
+
     }
     
     private void HabilitarControles(){
@@ -561,6 +612,17 @@ public class UsuarioFrm extends javax.swing.JFrame {
         tgInactivo.setEnabled(false);
     }
     
+
+    private void resetBotones(){
+        btnNuevo.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+        
+        btnGuardar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnCerrar.setEnabled(true);
+    }
+
     private void resetBotones(int estado){
         this.estado = estado;
         
@@ -581,5 +643,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         txtCorreo.setText("");
         txtClave.setText("");
         tgActivo.setSelected(true);
+
     }
 }
