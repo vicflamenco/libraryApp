@@ -1,5 +1,6 @@
 package Util;
 
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Validador {
@@ -9,9 +10,14 @@ public class Validador {
         return (valor.isEmpty()) ? null : valor;
     }
     
+    public static String validarTexto(JTextArea txtField){
+        String valor = txtField.getText();
+        return (valor.isEmpty()) ? null : valor;
+    }
+    
     public static int validarEntero(JTextField txtField){
         String valor = txtField.getText();
-        return (!valor.isEmpty() && valor.matches("[0-9]+")) ? Integer.parseInt(valor) : null;
+        return (!valor.isEmpty() && valor.matches("[0-9]+")) ? Integer.parseInt(valor) : -1;
     }
     
     public static String validarFecha(JTextField txtField){
