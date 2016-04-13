@@ -37,9 +37,12 @@ public class EditorialesRepositorio {
             String sql = "SELECT * FROM Editorial WHERE ideditorial = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             
-            this._persistencia.cerrarConexion();
             if (rs.first()){
-                return new Editorial(rs.getInt("ideditorial"), rs.getString("nombre"));
+                Editorial editorial = new Editorial(
+                        rs.getInt("ideditorial"), 
+                        rs.getString("nombre"));
+                this._persistencia.cerrarConexion();
+                return editorial;
             } else {
                 return null;
             }
@@ -50,11 +53,11 @@ public class EditorialesRepositorio {
         }
     }
     
-    public int Insertar(String nombre){
+    public int Insertar(Editorial editorial){
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "INSERT INTO Editorial (nombre) VALUES ('" + nombre + "');";
+            String sql = "INSERT INTO Editorial (nombre) VALUES ('" + editorial.getNombre() + "');";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -64,11 +67,11 @@ public class EditorialesRepositorio {
         }
     }
     
-    public int Actualizar(int id, String nombre){
+    public int Actualizar(Editorial editorial){
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "UPDATE Editorial SET nombre = '" + nombre + "' WHERE ideditorial = " + id + ";";
+            String sql = "UPDATE Editorial SET nombre = '" + editorial.getNombre() + "' WHERE ideditorial = " + editorial.getIdEditorial() + ";";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -78,21 +81,21 @@ public class EditorialesRepositorio {
         }
     }
     
-    public int Eliminar(int id){
+    public int Eliminar(String id){
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             
             // Verificar que no existan libros asociados a la editorial
-            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM libro WHERE ideditorial = " + id + ";");
+            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(ideditorial) FROM libro WHERE ideditorial = " + id + ";");
             rsCount.first();
             
-            int count = rsCount.getInt(0);
+            int count = rsCount.getInt(1);
 
             if (count > 0){
                 this._persistencia.cerrarConexion();
                 return 0;
             } else {
-                String sql = "DELETE Editorial Where ideditorial = " + id + ";";
+                String sql = "DELETE from editorial where ideditorial = " + id + ";";
                 int result = stmt.executeUpdate(sql);
                 this._persistencia.cerrarConexion();
                 return result;

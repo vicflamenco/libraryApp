@@ -1,7 +1,8 @@
 package Vistas.Mantenimientos;
 
 import DAL.AutoresRepositorio;
-import Modelos.Autor;
+import DAL.EditorialesRepositorio;
+import Modelos.Editorial;
 import Util.Validador;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -9,11 +10,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-public class AutoresFrm extends javax.swing.JFrame {
+public class EditorialesFrm extends javax.swing.JFrame {
     
     private int _accion = -1; // 0-> agregar, 1-> editar
     
-    public AutoresFrm() {
+    public EditorialesFrm() {
         initComponents();
         initData();
     }
@@ -23,23 +24,20 @@ public class AutoresFrm extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblAutores = new javax.swing.JTable();
-        tblAutores.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+        tblEditoriales = new javax.swing.JTable();
+        tblEditoriales.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                int selectedRow = tblAutores.getSelectedRow();
+                int selectedRow = tblEditoriales.getSelectedRow();
                 if(selectedRow >= 0) {
-                    cargarAutor(tblAutores.getValueAt(tblAutores.getSelectedRow(), 0).toString());
+                    cargarEditorial(tblEditoriales.getValueAt(tblEditoriales.getSelectedRow(), 0).toString());
                 }            
             }
         });
         pnlEditor = new javax.swing.JPanel();
-        lblIdAutor = new javax.swing.JLabel();
-        txtIdAutor = new javax.swing.JTextField();
+        lblIdEditorial = new javax.swing.JLabel();
+        txtIdEditorial = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
-        lblAcercaDe = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txaAcercaDe = new javax.swing.JTextArea();
         btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -48,7 +46,7 @@ public class AutoresFrm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tblAutores.setModel(new javax.swing.table.DefaultTableModel(
+        tblEditoriales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -56,7 +54,7 @@ public class AutoresFrm extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "IdAutor", "Nombre"
+                "IdEditorial", "Nombre"
             }
         ) {
             Class[] types = new Class [] {
@@ -74,35 +72,25 @@ public class AutoresFrm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tblAutores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tblAutores);
-        tblAutores.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (tblAutores.getColumnModel().getColumnCount() > 0) {
-            tblAutores.getColumnModel().getColumn(0).setResizable(false);
-            tblAutores.getColumnModel().getColumn(1).setResizable(false);
+        tblEditoriales.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tblEditoriales);
+        tblEditoriales.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tblEditoriales.getColumnModel().getColumnCount() > 0) {
+            tblEditoriales.getColumnModel().getColumn(0).setResizable(false);
+            tblEditoriales.getColumnModel().getColumn(1).setResizable(false);
         }
 
         pnlEditor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Editor de registros de libros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        lblIdAutor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblIdAutor.setText("Id");
+        lblIdEditorial.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblIdEditorial.setText("Id");
 
-        txtIdAutor.setEditable(false);
+        txtIdEditorial.setEditable(false);
 
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNombre.setText("Nombre");
 
-        lblAcercaDe.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblAcercaDe.setText("Acerca de");
-
         txtNombre.setEditable(false);
-
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        txaAcercaDe.setEditable(false);
-        txaAcercaDe.setColumns(20);
-        txaAcercaDe.setRows(5);
-        jScrollPane2.setViewportView(txaAcercaDe);
 
         javax.swing.GroupLayout pnlEditorLayout = new javax.swing.GroupLayout(pnlEditor);
         pnlEditor.setLayout(pnlEditorLayout);
@@ -110,20 +98,13 @@ public class AutoresFrm extends javax.swing.JFrame {
             pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEditorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlEditorLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblAcercaDe, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))
-                    .addGroup(pnlEditorLayout.createSequentialGroup()
-                        .addComponent(lblIdAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtIdAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre)))
+                .addComponent(lblIdEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtIdEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlEditorLayout.setVerticalGroup(
@@ -131,16 +112,11 @@ public class AutoresFrm extends javax.swing.JFrame {
             .addGroup(pnlEditorLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblIdAutor)
-                    .addComponent(txtIdAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIdEditorial)
+                    .addComponent(txtIdEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlEditorLayout.createSequentialGroup()
-                        .addComponent(lblAcercaDe)
-                        .addContainerGap(45, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnNuevo.setText("Nuevo");
@@ -213,26 +189,24 @@ public class AutoresFrm extends javax.swing.JFrame {
                     .addComponent(btnEliminar)
                     .addComponent(btnCancelar)
                     .addComponent(btnEditar))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private void cargarAutor(String id){
+    private void cargarEditorial(String id){
 
         if (id != null && !id.isEmpty()){
             
-            AutoresRepositorio repo = new AutoresRepositorio();
-            Autor autor = repo.Leer(id);
+            EditorialesRepositorio repo = new EditorialesRepositorio();
+            Editorial editorial = repo.Leer(id);
 
-            if (autor != null){
+            if (editorial != null){
 
-                this.txtNombre.setText(autor.getNombre());
-                this.txtIdAutor.setText(String.valueOf(autor.getIdAutor()));
-                this.txaAcercaDe.setText(autor.getAcerca_de());
-
+                this.txtNombre.setText(editorial.getNombre());
+                this.txtIdEditorial.setText(String.valueOf(editorial.getIdEditorial()));
 
                 this.btnEditar.setEnabled(true);
                 this.btnEliminar.setEnabled(true);
@@ -245,21 +219,21 @@ public class AutoresFrm extends javax.swing.JFrame {
     
     private void initData(){
         
-        AutoresRepositorio repositorio = new AutoresRepositorio();
-        List<Autor> autores = repositorio.Leer();
+        EditorialesRepositorio repositorio = new EditorialesRepositorio();
+        List<Editorial> editoriales = repositorio.Leer();
         
-        DefaultTableModel model = (DefaultTableModel) tblAutores.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblEditoriales.getModel();
         model.setRowCount(0);
-        tblAutores.revalidate();
+        tblEditoriales.revalidate();
         
-        for (Autor autor : autores) {
+        for (Editorial editorial : editoriales) {
             model.addRow(
                 new Object[] { 
-                    autor.getIdAutor(), 
-                    autor.getNombre()
+                    editorial.getIdEditorial(), 
+                    editorial.getNombre()
                 });
         }
-        tblAutores.setModel(model);
+        tblEditoriales.setModel(model);
 
         this.btnEditar.setEnabled(false);
         this.btnGuardar.setEnabled(false);
@@ -269,13 +243,11 @@ public class AutoresFrm extends javax.swing.JFrame {
     }
     
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        this.txtIdAutor.setText("");
+        this.txtIdEditorial.setText("");
         this.txtNombre.setText("");
-        this.txaAcercaDe.setText("");
         this._accion = 0;
         
         this.txtNombre.setEditable(true);
-        this.txaAcercaDe.setEditable(true);
         
         this.btnGuardar.setEnabled(true);
         this.btnCancelar.setEnabled(true);
@@ -291,9 +263,8 @@ public class AutoresFrm extends javax.swing.JFrame {
         initData();
         this._accion = -1;
         
-        this.txtIdAutor.setEditable(false);
+        this.txtIdEditorial.setEditable(false);
         this.txtNombre.setEditable(false);
-        this.txaAcercaDe.setEditable(false);
 
         this.btnGuardar.setEnabled(false);
         this.btnCancelar.setEnabled(false);
@@ -301,33 +272,31 @@ public class AutoresFrm extends javax.swing.JFrame {
         this.btnEditar.setEnabled(false);
         this.btnEliminar.setEnabled(false);
         
-        this.txtIdAutor.setText("");
+        this.txtIdEditorial.setText("");
         this.txtNombre.setText("");
-        this.txaAcercaDe.setText("");
     }
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
-        String id = txtIdAutor.getText();
+        String id = txtIdEditorial.getText();
         String nombre = Validador.validarTexto(txtNombre);
-        String acercaDe = Validador.validarTexto(txaAcercaDe);
         
-        if (nombre == null || acercaDe == null){
+        if (nombre == null){
             JOptionPane.showMessageDialog(null, "Por favor, complete cada uno de los datos del formulario en su formato válido");
         } else {
             
-            Autor autor = new Autor(id.isEmpty() ? 0 : Integer.parseInt(id), nombre, acercaDe);
-            AutoresRepositorio repo = new AutoresRepositorio();
+            Editorial editorial = new Editorial(id.isEmpty() ? 0 : Integer.parseInt(id), nombre);
+            EditorialesRepositorio repo = new EditorialesRepositorio();
             
             if (this._accion == 0){
-                if (repo.Insertar(autor) > 0){
+                if (repo.Insertar(editorial) > 0){
                     JOptionPane.showMessageDialog(null, "El registro se insertó satisfactoriamente");
                     success();
                 } else {
                     JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar insertar el registro");
                 }
             } else if (this._accion == 1){
-                if (repo.Actualizar(autor) > 0){
+                if (repo.Actualizar(editorial) > 0){
                     JOptionPane.showMessageDialog(null, "El registro se actualizó satisfactoriamente");
                     success();
                 } else {
@@ -340,9 +309,9 @@ public class AutoresFrm extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         
-        String idAutor = this.txtIdAutor.getText();
+        String id = this.txtIdEditorial.getText();
         
-        if (idAutor.isEmpty()){
+        if (id.isEmpty()){
             JOptionPane.showMessageDialog(this, "Seleccione un registro en la cuadrícula");
         } else {
             
@@ -351,8 +320,8 @@ public class AutoresFrm extends javax.swing.JFrame {
                     "Confirmación", JOptionPane.YES_NO_OPTION);
             
             if (confirmacion == JOptionPane.YES_OPTION){
-                AutoresRepositorio repo = new AutoresRepositorio();
-                if (repo.Eliminar(idAutor) > 0){
+                EditorialesRepositorio repo = new EditorialesRepositorio();
+                if (repo.Eliminar(id) > 0){
                     JOptionPane.showMessageDialog(this, "Registro eliminado con éxito");
                     success();
                     this.btnEliminar.setEnabled(false);
@@ -369,25 +338,22 @@ public class AutoresFrm extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this._accion = -1;
         
-        this.txtIdAutor.setText("");
+        this.txtIdEditorial.setText("");
         this.txtNombre.setText("");
-        this.txaAcercaDe.setText("");
         
         this.txtNombre.setEditable(false);
-        this.txaAcercaDe.setEditable(false);
         
         this.btnNuevo.setEnabled(true);
         this.btnGuardar.setEnabled(false);
         this.btnCancelar.setEnabled(false);
         
-        this.txtIdAutor.requestFocus();
+        this.txtIdEditorial.requestFocus();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         this._accion = 1;
 
         this.txtNombre.setEditable(true);
-        this.txaAcercaDe.setEditable(true);
         
         this.btnGuardar.setEnabled(true);
         this.btnCancelar.setEnabled(true);
@@ -408,11 +374,11 @@ public class AutoresFrm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoresFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditorialesFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
         java.awt.EventQueue.invokeLater(() -> {
-            AutoresFrm frm = new AutoresFrm();
+            EditorialesFrm frm = new EditorialesFrm();
             frm.setVisible(true);
             frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         });
@@ -425,14 +391,11 @@ public class AutoresFrm extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblAcercaDe;
-    private javax.swing.JLabel lblIdAutor;
+    private javax.swing.JLabel lblIdEditorial;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel pnlEditor;
-    private javax.swing.JTable tblAutores;
-    private javax.swing.JTextArea txaAcercaDe;
-    private javax.swing.JTextField txtIdAutor;
+    private javax.swing.JTable tblEditoriales;
+    private javax.swing.JTextField txtIdEditorial;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
