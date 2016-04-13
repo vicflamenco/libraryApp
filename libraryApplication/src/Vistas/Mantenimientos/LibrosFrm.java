@@ -1,4 +1,4 @@
-package Vistas;
+package Vistas.Mantenimientos;
 
 import DAL.AutoresRepositorio;
 import DAL.EditorialesRepositorio;
@@ -32,7 +32,10 @@ public class LibrosFrm extends javax.swing.JFrame {
         tblLibros = new javax.swing.JTable();
         tblLibros.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                cargarLibro(tblLibros.getValueAt(tblLibros.getSelectedRow(), 0).toString());
+                int selectedRow = tblLibros.getSelectedRow();
+                if(selectedRow >= 0) {
+                    cargarLibro(tblLibros.getValueAt(tblLibros.getSelectedRow(), 0).toString());
+                }            
             }
         });
         pnlEditor = new javax.swing.JPanel();
@@ -141,12 +144,12 @@ public class LibrosFrm extends javax.swing.JFrame {
         pnlEditorLayout.setHorizontalGroup(
             pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEditorLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAnio)
-                    .addComponent(lblIdLibro)
-                    .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblEditorial, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(lblAnio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblIdLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlEditorLayout.createSequentialGroup()
@@ -154,14 +157,11 @@ public class LibrosFrm extends javax.swing.JFrame {
                             .addComponent(txtAño)
                             .addComponent(cmbEditorial, 0, 154, Short.MAX_VALUE)
                             .addComponent(txtIdLibro))
-                        .addGap(12, 12, 12)
-                        .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblEdicion, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(pnlEditorLayout.createSequentialGroup()
-                                    .addGap(17, 17, 17)
-                                    .addComponent(lblTitulo))
-                                .addComponent(lblSinopsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblSinopsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                            .addComponent(lblEdicion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(cmbAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +188,7 @@ public class LibrosFrm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlEditorLayout.createSequentialGroup()
-                        .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEditorial)
                             .addComponent(lblSinopsis)
                             .addComponent(cmbEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,41 +280,51 @@ public class LibrosFrm extends javax.swing.JFrame {
 
     
     private void cargarLibro(String id){
-        LibrosRepositorio repo = new LibrosRepositorio();
-        Libro libro = repo.Leer(id);
-        
-        if (libro != null){
-            
-            this.txtTitulo.setText(libro.getTitulo());
-            this.txtAño.setText(String.valueOf(libro.getAnio()));
-            this.txtEdicion.setText(libro.getEdicion());
-            this.txtIdLibro.setText(libro.getIdLibro());
-            this.txaSinopsis.setText(libro.getSinopsis());
-            
-            for (int i = 0; i < this._editoriales.length; i++){
-                if (this._editoriales[i] == libro.getIdEditorial()){
-                    cmbEditorial.setSelectedIndex(i);
-                    break;
+
+        if (id != null && !id.isEmpty()){
+            LibrosRepositorio repo = new LibrosRepositorio();
+            Libro libro = repo.Leer(id);
+
+            if (libro != null){
+
+                this.txtTitulo.setText(libro.getTitulo());
+                this.txtAño.setText(String.valueOf(libro.getAnio()));
+                this.txtEdicion.setText(libro.getEdicion());
+                this.txtIdLibro.setText(libro.getIdLibro());
+                this.txaSinopsis.setText(libro.getSinopsis());
+
+                for (int i = 0; i < this._editoriales.length; i++){
+                    if (this._editoriales[i] == libro.getIdEditorial()){
+                        cmbEditorial.setSelectedIndex(i);
+                        break;
+                    }
                 }
-            }
-            
-            for (int i = 0; i < this._autores.length; i++){
-                if (this._autores[i] == libro.getIdAutor()){
-                    cmbAutor.setSelectedIndex(i);
-                    break;
+
+                for (int i = 0; i < this._autores.length; i++){
+                    if (this._autores[i] == libro.getIdAutor()){
+                        cmbAutor.setSelectedIndex(i);
+                        break;
+                    }
                 }
+
+                this.btnEditar.setEnabled(true);
+                this.btnEliminar.setEnabled(true);
+            } else {
+                this.btnEditar.setEnabled(false);
+                this.btnEliminar.setEnabled(false);
             }
         }
     }
     
     private void initData(){
+        
         LibrosRepositorio repositorio = new LibrosRepositorio();
         List<Libro> libros = repositorio.Leer();
         
         DefaultTableModel model = (DefaultTableModel) tblLibros.getModel();
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
+        model.setRowCount(0);
+        
+        tblLibros.revalidate();
         
         for (Libro libro : libros) {
             model.addRow(
@@ -332,28 +342,41 @@ public class LibrosFrm extends javax.swing.JFrame {
         AutoresRepositorio repo = new AutoresRepositorio();
         List<Autor> autores = repo.Leer();
         
-        int i = 0;
-        this._autores = new int[autores.size()];
-        while (cmbAutor.getItemCount() > 0){
-            cmbAutor.removeItemAt(0);
-        }
-        for (Autor autor : autores){
-            this._autores[i++] = autor.getIdAutor();
-            cmbAutor.addItem(autor.getNombre());
+        
+        if (autores.size() > 0){
+            
+            int i = 0;
+            this._autores = new int[autores.size()];
+            while (cmbAutor.getItemCount() > 0){
+                cmbAutor.removeItemAt(0);
+            }
+            
+            for (Autor autor : autores){
+                this._autores[i++] = autor.getIdAutor();
+                cmbAutor.addItem(autor.getNombre());
+            }
         }
         
         EditorialesRepositorio repo2 = new EditorialesRepositorio();
         List<Editorial> editoriales = repo2.Leer();
         
-        i = 0;
-        this._editoriales = new int[editoriales.size()];
-        while (cmbEditorial.getItemCount() > 0){
-            cmbEditorial.removeItemAt(0);
+        if (editoriales.size() > 0) {
+           int i = 0;
+            this._editoriales = new int[editoriales.size()];
+            while (cmbEditorial.getItemCount() > 0){
+                cmbEditorial.removeItemAt(0);
+            }
+            for (Editorial editorial : editoriales){
+                this._editoriales[i++] = editorial.getIdEditorial();
+                cmbEditorial.addItem(editorial.getNombre());
+            }
         }
-        for (Editorial editorial : editoriales){
-            this._editoriales[i++] = editorial.getIdEditorial();
-            cmbEditorial.addItem(editorial.getNombre());
-        }
+        
+        this.btnEditar.setEnabled(false);
+        this.btnGuardar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+        
     }
     
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -370,9 +393,39 @@ public class LibrosFrm extends javax.swing.JFrame {
         this.txtEdicion.setEditable(true);
         this.txaSinopsis.setEditable(true);
         
+        this.btnGuardar.setEnabled(true);
+        this.btnCancelar.setEnabled(true);
+        this.btnNuevo.setEnabled(false);
+        this.btnEditar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+        
         this.txtIdLibro.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    private void success(){
+        
+        initData();
+        this._accion = -1;
+        
+        this.txtIdLibro.setEditable(false);
+        this.txtTitulo.setEditable(false);
+        this.txtAño.setEditable(false);
+        this.txtEdicion.setEditable(false);
+        this.txaSinopsis.setEditable(false);
+
+        this.btnGuardar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnNuevo.setEnabled(true);
+        this.btnEditar.setEnabled(true);
+        this.btnEliminar.setEnabled(true);
+        
+        this.txtIdLibro.setText("");
+        this.txtTitulo.setText("");
+        this.txtAño.setText("");
+        this.txtEdicion.setText("");
+        this.txaSinopsis.setText("");
+    }
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
         String id = Validador.validarTexto(txtIdLibro);
@@ -394,25 +447,48 @@ public class LibrosFrm extends javax.swing.JFrame {
             Libro libro = new Libro(id, titulo, año, edicion, idEditorial, idAutor, sinopsis, "", "");
             LibrosRepositorio repo = new LibrosRepositorio();
             if (this._accion == 0){
-                repo.Insertar(libro);
-                JOptionPane.showMessageDialog(null, "El registro se insertó satisfactoriamente");
+                if (repo.Insertar(libro) > 0){
+                    JOptionPane.showMessageDialog(null, "El registro se insertó satisfactoriamente");
+                    success();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar insertar el registro");
+                }
             } else if (this._accion == 1){
-                repo.Actualizar(libro);
-                JOptionPane.showMessageDialog(null, "El registro se actualizó satisfactoriamente");
+                if (repo.Actualizar(libro) > 0){
+                    JOptionPane.showMessageDialog(null, "El registro se actualizó satisfactoriamente");
+                    success();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error al actualizar insertar el registro");
+                }
             }
-            initData();
-            this._accion = -1;
-
-            this.txtIdLibro.setEditable(false);
-            this.txtTitulo.setEditable(false);
-            this.txtAño.setEditable(false);
-            this.txtEdicion.setEditable(false);
-            this.txaSinopsis.setEditable(false);
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        String idLibro = this.txtIdLibro.getText();
+        
+        if (idLibro.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Seleccione un registro en la cuadrícula");
+        } else {
+            
+            int confirmacion = JOptionPane.showConfirmDialog(this, 
+                    "¿Desea eliminar el registro seleccionado?",
+                    "Confirmación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION){
+                LibrosRepositorio repo = new LibrosRepositorio();
+                if (repo.Eliminar(idLibro) > 0){
+                    JOptionPane.showMessageDialog(this, "Registro eliminado con éxito");
+                    success();
+                    this.btnEliminar.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ocurrió un error al eliminar el registro");
+                }
+            }
+            
+        }
         
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -431,6 +507,10 @@ public class LibrosFrm extends javax.swing.JFrame {
         this.txtEdicion.setEditable(false);
         this.txaSinopsis.setEditable(false);
         
+        this.btnNuevo.setEnabled(true);
+        this.btnGuardar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        
         this.txtIdLibro.requestFocus();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -440,20 +520,20 @@ public class LibrosFrm extends javax.swing.JFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         this._accion = 1;
-        
-        this.txtIdLibro.setText("");
-        this.txtTitulo.setText("");
-        this.txtAño.setText("");
-        this.txtEdicion.setText("");
-        this.txaSinopsis.setText("");
-        
-        this.txtIdLibro.setEditable(true);
+
+        this.txtIdLibro.setEditable(false);
         this.txtTitulo.setEditable(true);
         this.txtAño.setEditable(true);
         this.txtEdicion.setEditable(true);
         this.txaSinopsis.setEditable(true);
         
-        this.txtIdLibro.requestFocus();
+        this.btnGuardar.setEnabled(true);
+        this.btnCancelar.setEnabled(true);
+        this.btnNuevo.setEnabled(false);
+        this.btnEditar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
+        
+        this.txtTitulo.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     public static void main(String args[]) {

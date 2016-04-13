@@ -104,7 +104,8 @@ public class LibrosRepositorio {
             sql += "edicion = '" + libro.getEdicion() + "',";
             sql += "sinopsis = '" + libro.getSinopsis() + "',";
             sql += "ideditorial = " + libro.getIdEditorial() + ",";
-            sql += "idAutor = " + libro.getIdAutor() + ";";
+            sql += "idAutor = " + libro.getIdAutor();
+            sql += " WHERE idLibro = '" + libro.getIdLibro() + "';";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -114,25 +115,29 @@ public class LibrosRepositorio {
         }
     }
     
-    public int Eliminar(int id){
+    public int Eliminar(String id){
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             
-            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM libro_inventario WHERE idlibro = " + id + ";");
-            rsCount.first();
-            
-            int count = rsCount.getInt(0);
+            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(idlibro) FROM libro_inventario WHERE idlibro = '" + id + "';");
+            if (rsCount.first()){
+                int count = rsCount.getInt(1);
 
-            if (count > 0){
-                this._persistencia.cerrarConexion();
-                return 0;
+                if (count > 0){
+                    this._persistencia.cerrarConexion();
+                    return 0;
+                } else {
+                    String sql = "DELETE from libro Where idlibro = '" + id + "';";
+
+                    int result = stmt.executeUpdate(sql);
+                    this._persistencia.cerrarConexion();
+                    return result;
+                }
             } else {
-                String sql = "DELETE Libro Where idlibro = " + id + ";";
-                
-                int result = stmt.executeUpdate(sql);
-                this._persistencia.cerrarConexion();
-                return result;
+                return -1;
             }
+            
+            
             
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());

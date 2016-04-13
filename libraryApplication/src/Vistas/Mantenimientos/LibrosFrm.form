@@ -126,7 +126,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblLibros.getSelectionModel().addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;        public void valueChanged(ListSelectionEvent event) {&#xd;&#xa;            cargarLibro(tblLibros.getValueAt(tblLibros.getSelectedRow(), 0).toString());&#xd;&#xa;        }&#xd;&#xa;    });"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblLibros.getSelectionModel().addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;        public void valueChanged(ListSelectionEvent event) {&#xd;&#xa;            int selectedRow = tblLibros.getSelectedRow();&#xd;&#xa;            if(selectedRow &gt;= 0) {&#xd;&#xa;                cargarLibro(tblLibros.getValueAt(tblLibros.getSelectedRow(), 0).toString());&#xd;&#xa;            }            &#xd;&#xa;        }&#xd;&#xa;    });"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -146,12 +146,12 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="lblAutor" min="-2" pref="43" max="-2" attributes="0"/>
-                      <Component id="lblAnio" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblIdLibro" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblEditorial" min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="lblEditorial" pref="62" max="32767" attributes="0"/>
+                      <Component id="lblAnio" alignment="1" max="32767" attributes="0"/>
+                      <Component id="lblIdLibro" alignment="1" max="32767" attributes="0"/>
+                      <Component id="lblAutor" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -161,16 +161,11 @@
                               <Component id="cmbEditorial" pref="154" max="32767" attributes="0"/>
                               <Component id="txtIdLibro" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lblEdicion" min="-2" pref="43" max="-2" attributes="0"/>
-                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="17" pref="17" max="-2" attributes="0"/>
-                                      <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="lblSinopsis" alignment="1" min="-2" pref="43" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblSinopsis" alignment="1" pref="51" max="32767" attributes="0"/>
+                              <Component id="lblEdicion" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblTitulo" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="cmbAutor" min="-2" pref="154" max="-2" attributes="0"/>
@@ -205,10 +200,10 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblEditorial" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblSinopsis" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmbEditorial" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmbEditorial" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
