@@ -416,8 +416,8 @@ public class LibrosFrm extends javax.swing.JFrame {
         this.btnGuardar.setEnabled(false);
         this.btnCancelar.setEnabled(false);
         this.btnNuevo.setEnabled(true);
-        this.btnEditar.setEnabled(true);
-        this.btnEliminar.setEnabled(true);
+        this.btnEditar.setEnabled(false);
+        this.btnEliminar.setEnabled(false);
         
         this.txtIdLibro.setText("");
         this.txtTitulo.setText("");
@@ -483,6 +483,7 @@ public class LibrosFrm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Registro eliminado con éxito");
                     success();
                     this.btnEliminar.setEnabled(false);
+                    this.btnEditar.setEnabled(false);
                 } else {
                     JOptionPane.showMessageDialog(this, "Ocurrió un error al eliminar el registro");
                 }

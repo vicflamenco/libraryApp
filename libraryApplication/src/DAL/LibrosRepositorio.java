@@ -3,7 +3,6 @@ package DAL;
 import Modelos.Libro;
 import java.sql.*;
 import java.util.*;
-import javax.swing.JOptionPane;
 
 public class LibrosRepositorio {
     
@@ -136,8 +135,6 @@ public class LibrosRepositorio {
             } else {
                 return -1;
             }
-            
-            
             
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
