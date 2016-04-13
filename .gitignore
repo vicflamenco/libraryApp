@@ -216,3 +216,5 @@ pip-log.txt
 .mr.developer.cfg
 libraryApplication/nbproject/private/private.properties
 /libraryApplication/nbproject/private/
+/libraryApplication/nbproject/private/
+/libraryApplication/build/

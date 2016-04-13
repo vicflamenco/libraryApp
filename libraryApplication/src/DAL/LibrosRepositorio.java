@@ -3,6 +3,7 @@ package DAL;
 import Modelos.Libro;
 import java.sql.*;
 import java.util.*;
+import javax.swing.JOptionPane;
 
 public class LibrosRepositorio {
     
@@ -16,7 +17,7 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT l.*, a.nombre, e.nombre FROM libro l";
+            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial FROM libro l";
             sql += " INNER JOIN autor a ON a.idautor = l.idautor ";
             sql += " INNER JOIN editorial e ON e.ideditorial = l.ideditorial;";
             
@@ -48,14 +49,14 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT l.*, a.nombre, e.nombre FROM libro l";
+            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial FROM libro l ";
             sql += "INNER JOIN autor a ON a.idautor = l.idautor ";
             sql += "INNER JOIN editorial e ON e.ideditorial = l.ideditorial";
-            sql += " WHERE l.idlibro = " + id + ";";
+            sql += " WHERE l.idlibro = '" + id + "';";
             ResultSet rs = stmt.executeQuery(sql);
-            this._persistencia.cerrarConexion();
+            
             if (rs.first()){
-                return new Libro(
+                Libro libro = new Libro(
                     rs.getString("idlibro"), 
                     rs.getString("titulo"), 
                     rs.getInt("anio"),
@@ -66,6 +67,8 @@ public class LibrosRepositorio {
                     rs.getString("nombreAutor"),
                     rs.getString("nombreEditorial")
                 );
+                this._persistencia.cerrarConexion();
+                return libro;
             } else {
                 return null;
             }
@@ -76,14 +79,13 @@ public class LibrosRepositorio {
         }
     }
     
-    public int Insertar(String id, String titulo, int anio, 
-            String edicion, String sinopsis, int idEditorial, int idAutor) {
+    public int Insertar(Libro libro) {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             String sql = "INSERT INTO Libro (idlibro, titulo, anio, edicion, sinopsis, ideditorial, idAutor)";
-            sql += " VALUES('" + id + "','" + titulo + "'," + anio + ",'" + edicion + "','";
-            sql += sinopsis + "'," + idEditorial + "," + idAutor + ");";
+            sql += " VALUES('" + libro.getIdLibro() + "','" + libro.getTitulo() + "'," + libro.getAnio() + ",'" + libro.getEdicion() + "','";
+            sql += libro.getSinopsis() + "'," + libro.getIdEditorial() + "," + libro.getIdAutor() + ");";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -102,7 +104,8 @@ public class LibrosRepositorio {
             sql += "edicion = '" + libro.getEdicion() + "',";
             sql += "sinopsis = '" + libro.getSinopsis() + "',";
             sql += "ideditorial = " + libro.getIdEditorial() + ",";
-            sql += "idAutor = " + libro.getIdAutor() + ");";
+            sql += "idAutor = " + libro.getIdAutor();
+            sql += " WHERE idLibro = '" + libro.getIdLibro() + "';";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -112,25 +115,29 @@ public class LibrosRepositorio {
         }
     }
     
-    public int Eliminar(int id){
+    public int Eliminar(String id){
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             
-            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM libro_inventario WHERE idlibro = " + id + ";");
-            rsCount.first();
-            
-            int count = rsCount.getInt(0);
+            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(idlibro) FROM libro_inventario WHERE idlibro = '" + id + "';");
+            if (rsCount.first()){
+                int count = rsCount.getInt(1);
 
-            if (count > 0){
-                this._persistencia.cerrarConexion();
-                return 0;
+                if (count > 0){
+                    this._persistencia.cerrarConexion();
+                    return 0;
+                } else {
+                    String sql = "DELETE from libro Where idlibro = '" + id + "';";
+
+                    int result = stmt.executeUpdate(sql);
+                    this._persistencia.cerrarConexion();
+                    return result;
+                }
             } else {
-                String sql = "DELETE Libro Where idlibro = " + id + ";";
-                
-                int result = stmt.executeUpdate(sql);
-                this._persistencia.cerrarConexion();
-                return result;
+                return -1;
             }
+            
+            
             
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
