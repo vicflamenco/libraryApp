@@ -1,6 +1,8 @@
 package DAL;
 
+import Modelos.Rol;
 import Modelos.Usuario;
+import Util.Cipher;
 import java.sql.*;
 import java.util.*;
 
@@ -25,7 +27,10 @@ public class UsuariosRepositorio {
                                 rs.getString("nombres"), 
                                 rs.getString("clave"),
                                 rs.getString("correo"),
-                                rs.getBoolean("activo")
+                                rs.getBoolean("activo"),
+                                TieneRol(rs.getString("idusuario"),1),
+                                TieneRol(rs.getString("idusuario"),2),
+                                TieneRol(rs.getString("idusuario"),3)
                         ));
             }
             return lstUsuarios;
@@ -50,7 +55,11 @@ public class UsuariosRepositorio {
                     rs.getString("nombres"), 
                     rs.getString("clave"),
                     rs.getString("correo"),
-                    rs.getBoolean("activo"));
+                    rs.getBoolean("activo"),
+                    TieneRol(rs.getString("idusuario"),1),
+                    TieneRol(rs.getString("idusuario"),2),
+                    TieneRol(rs.getString("idusuario"),3)
+                );
             } else {
                 return null;
             }
@@ -68,9 +77,13 @@ public class UsuariosRepositorio {
         
         try {
             String sql = "INSERT INTO usuario (idusuario,nombres,clave,correo,activo) VALUES ('";
-            sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + usuario.getClave();
+            sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + Cipher.getEncryptedText(usuario.getClave());
             sql += "','" + usuario.getCorreo() + "'," + usuario.isActivo() + ");";
             int result = _persistencia.ejectutarSentencia(sql);
+            
+            if (usuario.isAdmin()) AsignarRol(usuario.getIdUsuario(), 1); else QuitarRol(usuario.getIdUsuario(), 1);
+            if (usuario.isOperator()) AsignarRol(usuario.getIdUsuario(), 2); else QuitarRol(usuario.getIdUsuario(), 2);
+            if (usuario.isUser()) AsignarRol(usuario.getIdUsuario(), 3); else QuitarRol(usuario.getIdUsuario(), 3);
             
             return result;
             
@@ -85,12 +98,16 @@ public class UsuariosRepositorio {
         
         try {
             String sql = "UPDATE Usuario SET nombres = '" + usuario.getNombres();
-            sql += (usuario.getClave() != null) ?  "', clave = '" + usuario.getClave() : "";
+            sql += (!usuario.getClave().equals("")) ?  "', clave = '" + Cipher.getEncryptedText(usuario.getClave()) : "";
             sql += "', correo = '" + usuario.getCorreo();
             sql += "', activo = " + usuario.isActivo();
             sql += " WHERE idusuario = '" + usuario.getIdUsuario() + "';";
 
             int result = _persistencia.ejectutarSentencia(sql);
+            
+            if (usuario.isAdmin()) AsignarRol(usuario.getIdUsuario(), 1); else QuitarRol(usuario.getIdUsuario(), 1);
+            if (usuario.isOperator()) AsignarRol(usuario.getIdUsuario(), 2); else QuitarRol(usuario.getIdUsuario(), 2);
+            if (usuario.isUser()) AsignarRol(usuario.getIdUsuario(), 3); else QuitarRol(usuario.getIdUsuario(), 3);
             
             return result;
         } catch (Exception e){
@@ -104,24 +121,24 @@ public class UsuariosRepositorio {
         try {
             _persistencia.abrirConexion();
             
-            ResultSet rsCountRoles = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + id + "';");
-            rsCountRoles.first();
-            System.out.println("a");
             ResultSet rsCountPrestamos = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM prestamo WHERE idusuario = '" + id + "';");
             rsCountPrestamos.first();
             System.out.println("b");
             
-            int countRoles = rsCountRoles.getInt(1);
             int countPrestamos = rsCountPrestamos.getInt(1);
 
             this._persistencia.cerrarConexion();
             
             System.out.println("c");
-            if (countRoles > 0 || countPrestamos > 0){    
+            if (countPrestamos > 0){    
                 return 0;
             } else {
-                String sql = "DELETE FROM usuario WHERE idusuario = '" + id + "';";
+                String sql = "DELETE FROM usuario_rol WHERE idusuario = '" + id + "';";
                 int result = _persistencia.ejectutarSentencia(sql);
+                
+                
+                sql = "DELETE FROM usuario WHERE idusuario = '" + id + "';";
+                result = _persistencia.ejectutarSentencia(sql);
                 
                 return result;
             }
@@ -130,5 +147,82 @@ public class UsuariosRepositorio {
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;
         }
+    }
+    
+    public boolean AsignarRol(String usuarioId, int rolId){
+        
+        try {
+            _persistencia.abrirConexion();
+            String sql = "SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + usuarioId;
+            sql += "' AND idrol = " + rolId + ";";
+
+            ResultSet rsCount = _persistencia.ejecutarConsulta(sql);
+            boolean existe = rsCount.first() && rsCount.getInt(1) > 0;
+            
+            _persistencia.cerrarConexion();
+            
+            if (existe){
+                return true;
+            } else {
+                sql = "INSERT INTO usuario_rol(idusuario, idrol) VALUES ('";
+                sql += usuarioId + "'," + rolId + ");";
+                
+                boolean result = _persistencia.ejectutarSentencia(sql) > 0;
+                
+                return result;
+            }
+
+        } catch (Exception e){
+            System.out.println("Error en consulta: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean QuitarRol(String usuarioId, int rolId){
+        
+        try {
+            String sql = "SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + usuarioId;
+            sql += "' AND idrol = " + rolId + ";";
+            
+            _persistencia.abrirConexion();
+            ResultSet rsCount = _persistencia.ejecutarConsulta(sql);
+            boolean existe = rsCount.first() && rsCount.getInt(1) > 0;
+            
+            _persistencia.cerrarConexion();
+            
+            if (!existe){
+                return true;
+            } else {
+                sql = "DELETE FROM usuario_rol WHERE idusuario = '";
+                sql += usuarioId + "' AND idrol = " + rolId + ";";
+                boolean result = _persistencia.ejectutarSentencia(sql) > 0;
+                
+                return result;
+            }
+
+        } catch (Exception e){
+            System.out.println("Error en consulta: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean TieneRol(String usuarioId, int rolId){
+        boolean result = false;
+        try {
+//            _persistencia.abrirConexion();
+            String sql = "SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + usuarioId;
+            sql += "' AND idrol = " + rolId + ";";
+
+            ResultSet rsCount = _persistencia.ejecutarConsulta(sql);
+            
+            result =  rsCount.first() && rsCount.getInt(1) > 0;
+        } catch (Exception e) {
+            System.out.println("Error verificando rol asignado...");
+        }
+        finally{
+//            _persistencia.cerrarConexion();
+        }
+        
+        return result;
     }
 }

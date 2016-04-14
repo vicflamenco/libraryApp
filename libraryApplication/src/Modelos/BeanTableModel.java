@@ -211,7 +211,7 @@ public class BeanTableModel<T> extends RowTableModel<T>
 			ColumnInformation info = columns.get(i);
 			columnNames.add( info.getName() );
 			super.setColumnClass(i, info.getReturnType());
-			super.setColumnEditable(i, info.getSetter() == null ? false : true);
+			super.setColumnEditable(i, info.getSetter() == null ? false : false);
 		}
 	}
 
@@ -296,6 +296,7 @@ public class BeanTableModel<T> extends RowTableModel<T>
 	{
 		ColumnInformation ci = (ColumnInformation)columns.get( column );
 
+                
 		if (isEditable && ci.getSetter() == null) return;
 
 		super.setColumnEditable(column, isEditable);

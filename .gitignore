@@ -215,6 +215,10 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 libraryApplication/nbproject/private/private.properties
+<<<<<<< HEAD
+/libraryApplication/nbproject/private/
+=======
 /libraryApplication/nbproject/private/
 /libraryApplication/nbproject/private/
 /libraryApplication/build/
+>>>>>>> refs/remotes/origin/master

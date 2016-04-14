@@ -7,6 +7,8 @@ package Vistas.Seguridad;
 
 import DAL.UsuariosRepositorio;
 import Modelos.*;
+import Util.Validador;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -34,13 +36,16 @@ public class UsuarioFrm extends javax.swing.JFrame {
         
         tblData.setModel(model);
         tblData.removeColumn(tblData.getColumn("Clave"));
-        RXTable.reorderColumns(tblData, "IdUsuario","Nombres","Correo", "Activo");
+        tblData.removeColumn(tblData.getColumn("Admin"));
+        tblData.removeColumn(tblData.getColumn("Operator"));
+        tblData.removeColumn(tblData.getColumn("User"));
+        RXTable.reorderColumns(tblData, "Id Usuario","Nombres","Correo", "Activo");
         
         DeshabilitarControles();
         resetBotones(-1);
         
         tblData.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
-           LoadDetail();
+            LoadDetail();
         });
         
         LoadData();
@@ -77,7 +82,6 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCerrar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnRoles = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
@@ -86,8 +90,13 @@ public class UsuarioFrm extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        btnPrestatarioRol = new javax.swing.JToggleButton();
+        btnOperarioRol = new javax.swing.JToggleButton();
+        btnAdministradorRol = new javax.swing.JToggleButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setSize(new java.awt.Dimension(300, 250));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -117,6 +126,8 @@ public class UsuarioFrm extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jLabel2, gridBagConstraints);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 300));
 
         tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,16 +279,9 @@ public class UsuarioFrm extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         jPanel2.add(btnCancelar, gridBagConstraints);
 
-        btnRoles.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnRoles.setText("Roles");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        jPanel2.add(btnRoles, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 5);
@@ -324,7 +328,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(jPanel3, gridBagConstraints);
@@ -364,6 +368,49 @@ public class UsuarioFrm extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jPanel4, gridBagConstraints);
 
+        jLabel9.setText("Roles");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jLabel9, gridBagConstraints);
+
+        jPanel5.setLayout(new java.awt.GridBagLayout());
+
+        btnPrestatarioRol.setText("Prestatario");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel5.add(btnPrestatarioRol, gridBagConstraints);
+
+        btnOperarioRol.setText("Operario");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel5.add(btnOperarioRol, gridBagConstraints);
+
+        btnAdministradorRol.setText("Administrador");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel5.add(btnAdministradorRol, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jPanel5, gridBagConstraints);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -384,32 +431,35 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        switch (estado) {
-            case 1:
-                //Agregar
-                if (usuariosRepo.Insertar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), txtClave.getPassword().toString(), txtCorreo.getText(), tgActivo.isSelected()))>0)
-                {
-                    JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
-                    LoadData();
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
-                }
+        if (ValidarCampos())
+        {
+            switch (estado) {
+                case 1:
+                    //Agregar
+                    if (usuariosRepo.Insertar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), Arrays.toString(txtClave.getPassword()), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
+                    {
+                        JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
+                        LoadData();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                    }
+                        break;
+                case 2:
+                    //Modificar
+                    if (usuariosRepo.Actualizar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), new String(txtClave.getPassword()), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
+                    {
+                        JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
+                        LoadData();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                    }
+
                     break;
-            case 2:
-                //Modificar
-                if (usuariosRepo.Actualizar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), txtClave.getPassword().toString(), txtCorreo.getText(), tgActivo.isSelected()))>0)
-                {
-                    JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
-                    LoadData();
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
-                }
-                
-                break;
-            default:
-                
+                default:
+
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -485,13 +535,15 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnAdministradorRol;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnRoles;
+    private javax.swing.JToggleButton btnOperarioRol;
+    private javax.swing.JToggleButton btnPrestatarioRol;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -501,10 +553,12 @@ public class UsuarioFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -526,6 +580,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El servidor de base datos no se encuentra disponible");
         
         ResetInput();
+        DeshabilitarControles();
         resetBotones(-1);
     }
     
@@ -534,11 +589,15 @@ public class UsuarioFrm extends javax.swing.JFrame {
                 Usuario usuario = model.getRow(tblData.getSelectedRow());
                 
                 txtIdUsuario.setText(usuario.getIdUsuario());
-                txtClave.setText(usuario.getClave());
+                txtClave.setText("");
                 txtNombres.setText(usuario.getNombres());
                 txtCorreo.setText(usuario.getCorreo());
                 tgActivo.setSelected(usuario.isActivo());
                 tgInactivo.setSelected(!usuario.isActivo());
+                
+                btnAdministradorRol.setSelected(usuario.isAdmin());
+                btnOperarioRol.setSelected(usuario.isOperator());
+                btnPrestatarioRol.setSelected(usuario.isUser());
                 
                 resetBotones(0);
             } catch (Exception e) {
@@ -557,6 +616,10 @@ public class UsuarioFrm extends javax.swing.JFrame {
         txtClave.setEditable(true);
         tgActivo.setEnabled(true);
         tgInactivo.setEnabled(true);
+        
+        btnAdministradorRol.setEnabled(true);
+        btnOperarioRol.setEnabled(true);
+        btnPrestatarioRol.setEnabled(true);
     }
     
     private void DeshabilitarControles(){
@@ -566,6 +629,10 @@ public class UsuarioFrm extends javax.swing.JFrame {
         txtClave.setEditable(false);
         tgActivo.setEnabled(false);
         tgInactivo.setEnabled(false);
+        
+        btnAdministradorRol.setEnabled(false);
+        btnOperarioRol.setEnabled(false);
+        btnPrestatarioRol.setEnabled(false);
     }
     
     private void resetBotones(int estado){
@@ -579,7 +646,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnCancelar.setEnabled(btnGuardar.isEnabled());
         btnCerrar.setEnabled(estado <= 0);
         
-        btnRoles.setEnabled(estado == 0);
+        tblData.setEnabled(estado <= 0);
     }
 
     private void ResetInput() {
@@ -588,6 +655,40 @@ public class UsuarioFrm extends javax.swing.JFrame {
         txtCorreo.setText("");
         txtClave.setText("");
         tgActivo.setSelected(true);
-
+        
+        btnAdministradorRol.setSelected(false);
+        btnOperarioRol.setSelected(false);
+        btnPrestatarioRol.setSelected(false);
+    }
+    
+    private boolean ValidarCampos()
+    { 
+        if (Validador.validarTexto(txtIdUsuario) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El ID de usuario no es válido");
+            return false;
+        }
+        else if (Validador.validarTexto(txtNombres) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no es válido");
+            return false;
+        }
+        else if (Validador.validarCorreo(txtCorreo) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El correo electrónico no es válido");
+            return false;
+        }
+        else if ((txtClave.getPassword().length < 6 && estado == 1) || (txtClave.getPassword().length != 0 && txtClave.getPassword().length < 6 && estado == 2)) 
+        {
+            JOptionPane.showMessageDialog(null, "La contraseña no es válida");
+            return false;
+        }
+        else if (!(btnAdministradorRol.isSelected() || btnOperarioRol.isSelected() || btnPrestatarioRol.isSelected()))
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado un rol");
+            return false;
+        }
+        
+        return true;
     }
 }
