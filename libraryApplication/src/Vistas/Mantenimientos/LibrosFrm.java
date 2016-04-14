@@ -433,10 +433,12 @@ public class LibrosFrm extends javax.swing.JFrame {
         int año = Validador.validarEntero(txtAño);
         String edicion = Validador.validarTexto(txtEdicion);
         String sinopsis = Validador.validarTexto(txaSinopsis);
-        int idEditorial = this._editoriales[cmbEditorial.getSelectedIndex()];
-        int idAutor = this._autores[cmbAutor.getSelectedIndex()];
         
-        if (titulo == null || edicion == null || sinopsis == null || año < 0){
+        if (cmbEditorial.getItemCount() == 0){
+            JOptionPane.showMessageDialog(this, "Aún no existen editoriales configuradas");
+        } else if (cmbAutor.getItemCount() == 0){
+            JOptionPane.showMessageDialog(this, "Aún no existen autores configurados");
+        } else if (titulo == null || edicion == null || sinopsis == null || año < 0){
             JOptionPane.showMessageDialog(null, "Por favor, complete cada uno de los datos del formulario en su formato válido");
         } else if (cmbEditorial.getItemCount() <= 0){
             JOptionPane.showMessageDialog(null, "Aún no existen editoriales existentes");
@@ -444,6 +446,9 @@ public class LibrosFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Aún no existen autores existentes");
         } else {
             
+            int idEditorial = this._editoriales[cmbEditorial.getSelectedIndex()];
+            int idAutor = this._autores[cmbAutor.getSelectedIndex()];
+        
             Libro libro = new Libro(id, titulo, año, edicion, idEditorial, idAutor, sinopsis, "", "");
             LibrosRepositorio repo = new LibrosRepositorio();
             if (this._accion == 0){
