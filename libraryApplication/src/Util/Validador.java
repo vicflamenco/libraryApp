@@ -15,6 +15,11 @@ public class Validador {
         return (valor.isEmpty()) ? null : valor;
     }
     
+    public static String validarISBN(JTextField txtField){
+        String valor = txtField.getText();
+        return (!valor.isEmpty() && valor.matches("[0-9]{13}")) ? valor : null;
+    }
+    
     public static int validarEntero(JTextField txtField){
         String valor = txtField.getText();
         return (!valor.isEmpty() && valor.matches("[0-9]+")) ? Integer.parseInt(valor) : -1;

@@ -428,7 +428,7 @@ public class LibrosFrm extends javax.swing.JFrame {
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
-        String id = Validador.validarTexto(txtIdLibro);
+        String id = Validador.validarISBN(txtIdLibro);
         String titulo = Validador.validarTexto(txtTitulo);
         int año = Validador.validarEntero(txtAño);
         String edicion = Validador.validarTexto(txtEdicion);
@@ -438,7 +438,7 @@ public class LibrosFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Aún no existen editoriales configuradas");
         } else if (cmbAutor.getItemCount() == 0){
             JOptionPane.showMessageDialog(this, "Aún no existen autores configurados");
-        } else if (titulo == null || edicion == null || sinopsis == null || año < 0){
+        } else if (titulo == null || edicion == null || sinopsis == null || año < 0 || id == null){
             JOptionPane.showMessageDialog(null, "Por favor, complete cada uno de los datos del formulario en su formato válido");
         } else if (cmbEditorial.getItemCount() <= 0){
             JOptionPane.showMessageDialog(null, "Aún no existen editoriales existentes");
