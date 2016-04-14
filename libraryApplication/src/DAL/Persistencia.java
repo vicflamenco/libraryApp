@@ -9,12 +9,13 @@ import java.sql.Statement;
 public class Persistencia {
     
     private Connection con;
+    private String connectionString;
     
     public Persistencia(){
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
+            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "root");
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
             System.out.println("Error de conexión a la BD: " + e.getMessage());
@@ -76,10 +77,24 @@ public class Persistencia {
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
+            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "root");
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
             System.out.println("Error de conexión a la BD: " + e.getMessage());
         }
+    }
+
+    /**
+     * @return the connectionString
+     */
+    public String getConnectionString() {
+        return connectionString;
+    }
+
+    /**
+     * @param connectionString the connectionString to set
+     */
+    public void setConnectionString(String connectionString) {
+        this.connectionString = connectionString;
     }
 }

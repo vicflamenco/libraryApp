@@ -8,6 +8,7 @@ package Vistas.Seguridad;
 import DAL.UsuariosRepositorio;
 import Modelos.Usuario;
 import Util.Cipher;
+import Vistas.MainForm;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
@@ -46,7 +47,7 @@ public class LoginFrm extends javax.swing.JFrame {
         txtClave = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
         setType(java.awt.Window.Type.UTILITY);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -156,17 +157,23 @@ public class LoginFrm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        UsuariosRepositorio usuarioRepo = new UsuariosRepositorio();
-        
-        Usuario usuario = usuarioRepo.Leer(txtIdUsuario.getText());
-        String clave = Cipher.getSecurePassword(Arrays.toString(txtClave.getPassword()));
-        clave = Cipher.getSecurePassword(Arrays.toString(txtClave.getPassword()));
-        
-        if (usuario.getClave() != clave)
-            JOptionPane.showMessageDialog(this, "Sus credenciales no son correctas, por favor verifique e intente nuevamente.");
-        else{
-            new MainForm().setVisible(true);
-            this.setVisible(false);
+        if(txtIdUsuario.getText().equals(""))
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no es válido.");
+        else if (txtClave.getPassword().length == 0)
+            JOptionPane.showMessageDialog(null, "La contraseña no es válida.");
+        else
+        {        
+            UsuariosRepositorio usuarioRepo = new UsuariosRepositorio();
+
+            Usuario usuario = usuarioRepo.Leer(txtIdUsuario.getText());
+            String clave = Cipher.getEncryptedText(new String(txtClave.getPassword()));
+
+            if (!usuario.getClave().equals(clave))
+                JOptionPane.showMessageDialog(this, "Sus credenciales no son correctas, por favor verifique e intente nuevamente.");
+            else{
+                new MainForm(usuario.getIdUsuario()).setVisible(true);
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
 

@@ -15,6 +15,7 @@ public class AutoresFrm extends javax.swing.JFrame {
     
     public AutoresFrm() {
         initComponents();
+        setLocationRelativeTo(null);
         initData();
     }
 
@@ -46,7 +47,7 @@ public class AutoresFrm extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -215,6 +216,8 @@ public class AutoresFrm extends javax.swing.JFrame {
                     .addComponent(btnEditar))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        pnlEditor.getAccessibleContext().setAccessibleName("Editor de registros de autores");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

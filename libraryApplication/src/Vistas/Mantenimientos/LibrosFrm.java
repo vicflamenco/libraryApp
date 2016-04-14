@@ -21,6 +21,7 @@ public class LibrosFrm extends javax.swing.JFrame {
     
     public LibrosFrm() {
         initComponents();
+        setLocationRelativeTo(null);
         initData();
     }
 
@@ -60,7 +61,7 @@ public class LibrosFrm extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

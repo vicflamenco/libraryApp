@@ -7,6 +7,8 @@ package Vistas.Seguridad;
 
 import DAL.UsuariosRepositorio;
 import Modelos.*;
+import Util.Validador;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -94,7 +96,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnOperarioRol = new javax.swing.JToggleButton();
         btnAdministradorRol = new javax.swing.JToggleButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setSize(new java.awt.Dimension(300, 250));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -429,32 +431,35 @@ public class UsuarioFrm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        switch (estado) {
-            case 1:
-                //Agregar
-                if (usuariosRepo.Insertar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), txtClave.getPassword().toString(), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
-                {
-                    JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
-                    LoadData();
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
-                }
+        if (ValidarCampos())
+        {
+            switch (estado) {
+                case 1:
+                    //Agregar
+                    if (usuariosRepo.Insertar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), Arrays.toString(txtClave.getPassword()), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
+                    {
+                        JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
+                        LoadData();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                    }
+                        break;
+                case 2:
+                    //Modificar
+                    if (usuariosRepo.Actualizar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), new String(txtClave.getPassword()), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
+                    {
+                        JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
+                        LoadData();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                    }
+
                     break;
-            case 2:
-                //Modificar
-                if (usuariosRepo.Actualizar(new Usuario(txtIdUsuario.getText(), txtNombres.getText(), txtClave.getPassword().toString(), txtCorreo.getText(), tgActivo.isSelected(),btnAdministradorRol.isSelected(), btnOperarioRol.isSelected(), btnPrestatarioRol.isSelected()))>0)
-                {
-                    JOptionPane.showMessageDialog(null, "Acción realizada satisfactoriamente");
-                    LoadData();
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Ocurrio un error");
-                }
-                
-                break;
-            default:
-                
+                default:
+
+            }
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -575,6 +580,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El servidor de base datos no se encuentra disponible");
         
         ResetInput();
+        DeshabilitarControles();
         resetBotones(-1);
     }
     
@@ -583,7 +589,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
                 Usuario usuario = model.getRow(tblData.getSelectedRow());
                 
                 txtIdUsuario.setText(usuario.getIdUsuario());
-                txtClave.setText(usuario.getClave());
+                txtClave.setText("");
                 txtNombres.setText(usuario.getNombres());
                 txtCorreo.setText(usuario.getCorreo());
                 tgActivo.setSelected(usuario.isActivo());
@@ -653,5 +659,36 @@ public class UsuarioFrm extends javax.swing.JFrame {
         btnAdministradorRol.setSelected(false);
         btnOperarioRol.setSelected(false);
         btnPrestatarioRol.setSelected(false);
+    }
+    
+    private boolean ValidarCampos()
+    { 
+        if (Validador.validarTexto(txtIdUsuario) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El ID de usuario no es válido");
+            return false;
+        }
+        else if (Validador.validarTexto(txtNombres) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario no es válido");
+            return false;
+        }
+        else if (Validador.validarCorreo(txtCorreo) == null)
+        {
+            JOptionPane.showMessageDialog(null, "El correo electrónico no es válido");
+            return false;
+        }
+        else if ((txtClave.getPassword().length < 6 && estado == 1) || (txtClave.getPassword().length != 0 && txtClave.getPassword().length < 6 && estado == 2)) 
+        {
+            JOptionPane.showMessageDialog(null, "La contraseña no es válida");
+            return false;
+        }
+        else if (!(btnAdministradorRol.isSelected() || btnOperarioRol.isSelected() || btnPrestatarioRol.isSelected()))
+        {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado un rol");
+            return false;
+        }
+        
+        return true;
     }
 }

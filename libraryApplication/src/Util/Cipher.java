@@ -7,7 +7,9 @@ package Util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 
 /**
@@ -16,43 +18,24 @@ import java.security.NoSuchProviderException;
  */
 public class Cipher {
 
-    public static String getSecurePassword(String passwordToHash)
-    {
-        String salt = getSalt();
-        String generatedPassword = null;
-        try {
-            // Create MessageDigest instance for MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            //Add password bytes to digest
-            md.update(salt.getBytes());
-            //Get the hash's bytes 
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            //This bytes[] has bytes in decimal format;
-            //Convert it to hexadecimal format
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++)
-            {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            //Get complete hashed password in hex format
-            generatedPassword = sb.toString();
-        } 
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+   private static MessageDigest md;
+
+   public static String getEncryptedText(String pass){
+    try {
+        md = MessageDigest.getInstance("MD5");
+        byte[] passBytes = pass.getBytes();
+        md.reset();
+        byte[] digested = md.digest(passBytes);
+        StringBuffer sb = new StringBuffer();
+        for(int i=0;i<digested.length;i++){
+            sb.append(Integer.toHexString(0xff & digested[i]));
         }
-        return generatedPassword;
+        return sb.toString();
+    } catch (NoSuchAlgorithmException ex) {
+        Logger.getLogger(Cipher.class.getName()).log(Level.SEVERE, null, ex);
     }
-    
-     //Add salt
-    private static String getSalt() //throws NoSuchAlgorithmException, NoSuchProviderException
-    {
-        //Always use a SecureRandom generator
-        //SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        //Create array for salt
-        byte[] salt = new byte[16];
-        //Get a random salt
-        //sr.nextBytes(salt);
-        //return salt
-        return "JAVA011234567891";
-    }
+        return null;
+
+
+   }
 }

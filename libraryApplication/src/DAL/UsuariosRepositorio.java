@@ -77,7 +77,7 @@ public class UsuariosRepositorio {
         
         try {
             String sql = "INSERT INTO usuario (idusuario,nombres,clave,correo,activo) VALUES ('";
-            sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + Cipher.getSecurePassword(usuario.getClave());
+            sql += usuario.getIdUsuario() + "','" + usuario.getNombres() + "','" + Cipher.getEncryptedText(usuario.getClave());
             sql += "','" + usuario.getCorreo() + "'," + usuario.isActivo() + ");";
             int result = _persistencia.ejectutarSentencia(sql);
             
@@ -98,7 +98,7 @@ public class UsuariosRepositorio {
         
         try {
             String sql = "UPDATE Usuario SET nombres = '" + usuario.getNombres();
-            sql += (usuario.getClave() != null) ?  "', clave = '" + Cipher.getSecurePassword(usuario.getClave()) : "";
+            sql += (!usuario.getClave().equals("")) ?  "', clave = '" + Cipher.getEncryptedText(usuario.getClave()) : "";
             sql += "', correo = '" + usuario.getCorreo();
             sql += "', activo = " + usuario.isActivo();
             sql += " WHERE idusuario = '" + usuario.getIdUsuario() + "';";
@@ -121,24 +121,24 @@ public class UsuariosRepositorio {
         try {
             _persistencia.abrirConexion();
             
-            ResultSet rsCountRoles = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + id + "';");
-            rsCountRoles.first();
-            System.out.println("a");
             ResultSet rsCountPrestamos = _persistencia.ejecutarConsulta("SELECT COUNT(*) FROM prestamo WHERE idusuario = '" + id + "';");
             rsCountPrestamos.first();
             System.out.println("b");
             
-            int countRoles = rsCountRoles.getInt(1);
             int countPrestamos = rsCountPrestamos.getInt(1);
 
             this._persistencia.cerrarConexion();
             
             System.out.println("c");
-            if (countRoles > 0 || countPrestamos > 0){    
+            if (countPrestamos > 0){    
                 return 0;
             } else {
-                String sql = "DELETE FROM usuario WHERE idusuario = '" + id + "';";
+                String sql = "DELETE FROM usuario_rol WHERE idusuario = '" + id + "';";
                 int result = _persistencia.ejectutarSentencia(sql);
+                
+                
+                sql = "DELETE FROM usuario WHERE idusuario = '" + id + "';";
+                result = _persistencia.ejectutarSentencia(sql);
                 
                 return result;
             }
@@ -183,7 +183,8 @@ public class UsuariosRepositorio {
         try {
             String sql = "SELECT COUNT(*) FROM usuario_rol WHERE idusuario = '" + usuarioId;
             sql += "' AND idrol = " + rolId + ";";
-
+            
+            _persistencia.abrirConexion();
             ResultSet rsCount = _persistencia.ejecutarConsulta(sql);
             boolean existe = rsCount.first() && rsCount.getInt(1) > 0;
             
@@ -192,7 +193,7 @@ public class UsuariosRepositorio {
             if (!existe){
                 return true;
             } else {
-                sql = "DELETE usuario_rol WHERE idusuario = '";
+                sql = "DELETE FROM usuario_rol WHERE idusuario = '";
                 sql += usuarioId + "' AND idrol = " + rolId + ";";
                 boolean result = _persistencia.ejectutarSentencia(sql) > 0;
                 
