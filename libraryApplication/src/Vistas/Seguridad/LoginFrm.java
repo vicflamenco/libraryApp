@@ -166,14 +166,24 @@ public class LoginFrm extends javax.swing.JFrame {
             UsuariosRepositorio usuarioRepo = new UsuariosRepositorio();
 
             Usuario usuario = usuarioRepo.Leer(txtIdUsuario.getText());
-            String clave = Cipher.getEncryptedText(new String(txtClave.getPassword()));
+            
+            if(usuario.isActivo())
+            {
+                String clave = Cipher.getEncryptedText(new String(txtClave.getPassword()));
 
-            if (!usuario.getClave().equals(clave))
-                JOptionPane.showMessageDialog(this, "Sus credenciales no son correctas, por favor verifique e intente nuevamente.");
-            else{
-                new MainForm(usuario.getIdUsuario()).setVisible(true);
-                this.setVisible(false);
+                if (!usuario.getClave().equals(clave))
+                    JOptionPane.showMessageDialog(this, "Sus credenciales no son correctas, por favor verifique e intente nuevamente.");
+                else{
+                    new MainForm(usuario.getIdUsuario()).setVisible(true);
+                    this.setVisible(false);
+                }
             }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Lo sentimos, su usuario se encuentra inactivo. Por favor contacte a algún administrador del sistema.");
+            }
+            
+            
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
