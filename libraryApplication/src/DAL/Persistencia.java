@@ -14,7 +14,7 @@ public class Persistencia {
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
+            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "");
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
             System.out.println("Error de conexión a la BD: " + e.getMessage());
@@ -76,7 +76,7 @@ public class Persistencia {
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.con = DriverManager.getConnection("jdbc:mysql://PRUEBAS-PC:3306/library_db", "root", "123456");
+            this.con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "");
             
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e){
             System.out.println("Error de conexión a la BD: " + e.getMessage());

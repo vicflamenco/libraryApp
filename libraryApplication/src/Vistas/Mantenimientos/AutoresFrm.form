@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -31,6 +31,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnNuevo" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnEditar" min="-2" pref="109" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnGuardar" min="-2" pref="109" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnCancelar" min="-2" pref="109" max="-2" attributes="0"/>
@@ -55,8 +57,9 @@
                   <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,16 +72,12 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tblLibros">
+        <Component class="javax.swing.JTable" name="tblAutores">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="4">
-                <Column editable="false" title="IdLibro" type="java.lang.Integer"/>
-                <Column editable="false" title="T&#xed;tulo" type="java.lang.String"/>
-                <Column editable="false" title="A&#xf1;o" type="java.lang.Integer"/>
-                <Column editable="false" title="Edici&#xf3;n" type="java.lang.String"/>
-                <Column editable="false" title="Editorial" type="java.lang.String"/>
-                <Column editable="false" title="Autor" type="java.lang.String"/>
+              <Table columnCount="2" rowCount="4">
+                <Column editable="false" title="IdAutor" type="java.lang.String"/>
+                <Column editable="false" title="Nombre" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -88,38 +87,23 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
               </TableColumnModel>
             </Property>
-            <Property name="columnSelectionAllowed" type="boolean" value="true"/>
+            <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+              <JTableSelectionModel selectionMode="0"/>
+            </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="tblAutores.getSelectionModel().addListSelectionListener(new ListSelectionListener(){&#xd;&#xa;        public void valueChanged(ListSelectionEvent event) {&#xd;&#xa;            int selectedRow = tblAutores.getSelectedRow();&#xd;&#xa;            if(selectedRow &gt;= 0) {&#xd;&#xa;                cargarAutor(tblAutores.getValueAt(tblAutores.getSelectedRow(), 0).toString());&#xd;&#xa;            }            &#xd;&#xa;        }&#xd;&#xa;    });"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -138,40 +122,23 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="lblAutor" min="-2" pref="43" max="-2" attributes="0"/>
-                      <Component id="lblAnio" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblIdLibro" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblEditorial" min="-2" pref="43" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="txtAño" max="32767" attributes="0"/>
-                              <Component id="cmbEditorial" pref="154" max="32767" attributes="0"/>
-                              <Component id="txtIdLibro" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lblEdicion" min="-2" pref="43" max="-2" attributes="0"/>
-                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="17" pref="17" max="-2" attributes="0"/>
-                                      <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="lblSinopsis" alignment="1" min="-2" pref="43" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                          <Component id="lblAcercaDe" min="-2" pref="51" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" pref="488" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="cmbAutor" min="-2" pref="154" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" pref="268" max="32767" attributes="0"/>
-                      <Component id="txtTitulo" max="32767" attributes="0"/>
-                      <Component id="txtEdicion" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="lblIdAutor" min="-2" pref="62" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtIdAutor" min="-2" pref="81" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lblNombre" min="-2" pref="51" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtNombre" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -182,95 +149,51 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblIdLibro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtIdLibro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblIdAutor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtIdAutor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblAnio" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtAño" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtEdicion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblEditorial" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblSinopsis" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmbEditorial" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblAutor" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmbAutor" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
+                          <Component id="lblAcercaDe" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="45" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="lblIdLibro">
+        <Component class="javax.swing.JLabel" name="lblIdAutor">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="IdLibro"/>
+            <Property name="text" type="java.lang.String" value="Id"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtIdLibro">
+        <Component class="javax.swing.JTextField" name="txtIdAutor">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblTitulo">
+        <Component class="javax.swing.JLabel" name="lblNombre">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="T&#xed;tulo"/>
+            <Property name="text" type="java.lang.String" value="Nombre"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblAnio">
+        <Component class="javax.swing.JLabel" name="lblAcercaDe">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="A&#xf1;o"/>
+            <Property name="text" type="java.lang.String" value="Acerca de"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblEdicion">
+        <Component class="javax.swing.JTextField" name="txtNombre">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Edici&#xf3;n"/>
+            <Property name="editable" type="boolean" value="false"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblSinopsis">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Sinopsis"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblEditorial">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Editorial"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblAutor">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Autor"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtA&#xf1;o">
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtTitulo">
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtEdicion">
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <Properties>
@@ -282,34 +205,15 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="txaSinopsis">
+            <Component class="javax.swing.JTextArea" name="txaAcercaDe">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JComboBox" name="cmbEditorial">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cmbAutor">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="btnNuevo">
@@ -342,6 +246,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEditar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Editar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

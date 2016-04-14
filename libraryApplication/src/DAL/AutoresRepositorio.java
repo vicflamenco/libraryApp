@@ -37,9 +37,10 @@ public class AutoresRepositorio {
             String sql = "SELECT * FROM autor WHERE idautor = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             
-            this._persistencia.cerrarConexion();
             if (rs.first()){
-                return new Autor(rs.getInt("idautor"), rs.getString("nombre"), rs.getString("acerca_de"));
+                Autor autor = new Autor(rs.getInt("idautor"), rs.getString("nombre"), rs.getString("acerca_de"));
+                this._persistencia.cerrarConexion();
+                return autor;
             } else {
                 return null;
             }
@@ -50,11 +51,11 @@ public class AutoresRepositorio {
         }
     }
     
-    public int Insertar(String nombre, String acerca_de){
+    public int Insertar(Autor autor){
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "INSERT INTO Autor (nombre, acerca_de) VALUES ('" + nombre + "','" + acerca_de + "');";
+            String sql = "INSERT INTO Autor (nombre, acerca_de) VALUES ('" + autor.getNombre() + "','" + autor.getAcerca_de() + "');";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -64,12 +65,12 @@ public class AutoresRepositorio {
         }
     }
     
-    public int Actualizar(int id, String nombre, String acerca_de){
+    public int Actualizar(Autor autor){
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "UPDATE Autor SET nombre = '" + nombre + "', acerca_de = '";
-            sql += acerca_de + "' WHERE idautor = " + id + ";";
+            String sql = "UPDATE Autor SET nombre = '" + autor.getNombre() + "', acerca_de = '";
+            sql += autor.getAcerca_de() + "' WHERE idautor = " + autor.getIdAutor() + ";";
             int result = stmt.executeUpdate(sql);
             this._persistencia.cerrarConexion();
             return result;
@@ -79,20 +80,20 @@ public class AutoresRepositorio {
         }
     }
     
-    public int Eliminar(int id){
+    public int Eliminar(String id){
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
             
-            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM libro WHERE idautor = " + id + ";");
+            ResultSet rsCount = stmt.executeQuery("SELECT COUNT(idautor) FROM libro WHERE idautor = " + id + ";");
             rsCount.first();
             
-            int count = rsCount.getInt(0);
+            int count = rsCount.getInt(1);
 
             if (count > 0){
                 this._persistencia.cerrarConexion();
                 return 0;
             } else {
-                String sql = "DELETE Autor Where idautor = " + id + ";";
+                String sql = "DELETE from Autor Where idautor = " + id + ";";
                 int result = stmt.executeUpdate(sql);
                 this._persistencia.cerrarConexion();
                 return result;
