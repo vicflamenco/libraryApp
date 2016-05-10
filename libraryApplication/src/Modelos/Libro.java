@@ -9,13 +9,14 @@ public class Libro {
     private String sinopsis;
     private int idEditorial;
     private int idAutor;
+    private int numCopiasInventario;
     
     private String nombreAutor;
     private String nombreEditorial;
     
     public Libro(String id, String titulo, int anio, String edicion, 
             int idEditorial, int idAutor, String sinopsis, 
-            String nombreAutor, String nombreEditorial){
+            String nombreAutor, String nombreEditorial, int numCopiasInventario){
         this.idLibro = id;
         this.titulo = titulo;
         this.anio = anio;
@@ -25,6 +26,7 @@ public class Libro {
         this.idAutor = idAutor;
         this.nombreAutor = nombreAutor;
         this.nombreEditorial = nombreEditorial;
+        this.numCopiasInventario = numCopiasInventario;
     }
 
     public String getIdLibro() {
@@ -97,5 +99,13 @@ public class Libro {
 
     public void setNombreEditorial(String nombreEditorial) {
         this.nombreEditorial = nombreEditorial;
+    }
+
+    public int getNumCopiasInventario() {
+        return numCopiasInventario;
+    }
+    
+    public void setNumCopiasInventario(int numCopiasInventario) {
+        this.numCopiasInventario = numCopiasInventario;
     }
 }

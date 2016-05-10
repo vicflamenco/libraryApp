@@ -23,24 +23,26 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" min="-2" pref="609" max="-2" attributes="0"/>
-                  <Component id="pnlEditor" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="btnNuevo" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="btnNuevo" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnEditar" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="btnEditar" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnGuardar" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="btnGuardar" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnCancelar" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Component id="btnEliminar" min="-2" pref="109" max="-2" attributes="0"/>
+                      <Component id="btnEliminar" min="-2" pref="80" max="-2" attributes="0"/>
+                      <EmptySpace pref="97" max="32767" attributes="0"/>
+                      <Component id="btnInventario" min="-2" pref="155" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="pnlEditor" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,8 +60,9 @@
                   <Component id="btnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnInventario" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,13 +78,14 @@
         <Component class="javax.swing.JTable" name="tblLibros">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="4">
+              <Table columnCount="7" rowCount="4">
                 <Column editable="false" title="ISBN" type="java.lang.String"/>
                 <Column editable="false" title="T&#xed;tulo" type="java.lang.String"/>
                 <Column editable="false" title="A&#xf1;o" type="java.lang.Integer"/>
                 <Column editable="false" title="Edici&#xf3;n" type="java.lang.String"/>
                 <Column editable="false" title="Editorial" type="java.lang.String"/>
                 <Column editable="false" title="Autor" type="java.lang.String"/>
+                <Column editable="false" title="Inventario" type="java.lang.Integer"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -172,7 +176,7 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" pref="268" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" max="32767" attributes="0"/>
                       <Component id="txtTitulo" max="32767" attributes="0"/>
                       <Component id="txtEdicion" max="32767" attributes="0"/>
                   </Group>
@@ -366,6 +370,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnInventario">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar a inventario"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInventarioActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

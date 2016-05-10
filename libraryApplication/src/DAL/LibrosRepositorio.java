@@ -2,6 +2,8 @@ package DAL;
 
 import Modelos.Libro;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class LibrosRepositorio {
@@ -16,7 +18,8 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial FROM libro l";
+            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial, ";
+            sql += " (SELECT Count(*) from libro_inventario WHERE idLibro = l.idLibro) numCopias FROM libro l";
             sql += " INNER JOIN autor a ON a.idautor = l.idautor ";
             sql += " INNER JOIN editorial e ON e.ideditorial = l.ideditorial;";
             
@@ -33,7 +36,8 @@ public class LibrosRepositorio {
                         rs.getInt("idautor"),
                         rs.getString("sinopsis"),
                         rs.getString("nombreAutor"),
-                        rs.getString("nombreEditorial")
+                        rs.getString("nombreEditorial"),
+                        rs.getInt("numCopias")
                 ));
             }
             this._persistencia.cerrarConexion();
@@ -48,9 +52,10 @@ public class LibrosRepositorio {
         
         try {
             Statement stmt = this._persistencia.obtenerSentencia();
-            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial FROM libro l ";
-            sql += "INNER JOIN autor a ON a.idautor = l.idautor ";
-            sql += "INNER JOIN editorial e ON e.ideditorial = l.ideditorial";
+            String sql = "SELECT l.*, a.nombre nombreAutor, e.nombre nombreEditorial, ";
+            sql += " (SELECT Count(*) from libro_inventario WHERE idLibro = l.idLibro) numCopias FROM libro l";
+            sql += " INNER JOIN autor a ON a.idautor = l.idautor ";
+            sql += " INNER JOIN editorial e ON e.ideditorial = l.ideditorial";
             sql += " WHERE l.idlibro = '" + id + "';";
             ResultSet rs = stmt.executeQuery(sql);
             
@@ -64,7 +69,8 @@ public class LibrosRepositorio {
                     rs.getInt("idautor"),
                     rs.getString("sinopsis"),
                     rs.getString("nombreAutor"),
-                    rs.getString("nombreEditorial")
+                    rs.getString("nombreEditorial"),
+                    rs.getInt("numCopias")
                 );
                 this._persistencia.cerrarConexion();
                 return libro;
@@ -136,6 +142,29 @@ public class LibrosRepositorio {
                 return -1;
             }
             
+        } catch (Exception e){
+            System.out.println("Error en consulta: " + e.getMessage());
+            return -1;
+        }
+    }
+    
+    public int IngresarInventario(String idLibro, int cantidad){
+        try {
+            
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            String dateTime = dateFormat.format(new java.util.Date());
+            System.out.println(dateTime);
+            Statement stmt = this._persistencia.obtenerSentencia();
+            String sql = "INSERT INTO libro_inventario (idlibro, fecha_ingreso, estado)";
+            sql += " VALUES('" + idLibro + "','" + dateTime + "','disponible');";
+            
+            int result = 0;
+            for (int i = 0; i < cantidad; i++){
+                result += stmt.executeUpdate(sql);
+            }
+            
+            this._persistencia.cerrarConexion();
+            return result;
         } catch (Exception e){
             System.out.println("Error en consulta: " + e.getMessage());
             return -1;

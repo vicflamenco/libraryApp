@@ -1,6 +1,5 @@
 package DAL;
 
-import Modelos.Rol;
 import Modelos.Usuario;
 import Util.Cipher;
 import java.sql.*;

@@ -60,25 +60,26 @@ public class LibrosFrm extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ISBN", "Título", "Año", "Edición", "Editorial", "Autor"
+                "ISBN", "Título", "Año", "Edición", "Editorial", "Autor", "Inventario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -166,7 +167,7 @@ public class LibrosFrm extends javax.swing.JFrame {
                     .addComponent(cmbAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addComponent(txtTitulo)
                     .addComponent(txtEdicion))
                 .addContainerGap())
@@ -238,6 +239,13 @@ public class LibrosFrm extends javax.swing.JFrame {
             }
         });
 
+        btnInventario.setText("Agregar a inventario");
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -245,19 +253,21 @@ public class LibrosFrm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlEditor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,8 +282,9 @@ public class LibrosFrm extends javax.swing.JFrame {
                     .addComponent(btnGuardar)
                     .addComponent(btnEliminar)
                     .addComponent(btnCancelar)
-                    .addComponent(btnEditar))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(btnEditar)
+                    .addComponent(btnInventario))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -335,7 +346,8 @@ public class LibrosFrm extends javax.swing.JFrame {
                     libro.getAnio(), 
                     libro.getEdicion(), 
                     libro.getNombreEditorial(), 
-                    libro.getNombreAutor()
+                    libro.getNombreAutor(),
+                    libro.getNumCopiasInventario()
                 });
         }
         tblLibros.setModel(model);
@@ -450,7 +462,7 @@ public class LibrosFrm extends javax.swing.JFrame {
             int idEditorial = this._editoriales[cmbEditorial.getSelectedIndex()];
             int idAutor = this._autores[cmbAutor.getSelectedIndex()];
         
-            Libro libro = new Libro(id, titulo, año, edicion, idEditorial, idAutor, sinopsis, "", "");
+            Libro libro = new Libro(id, titulo, año, edicion, idEditorial, idAutor, sinopsis, "", "", 0);
             LibrosRepositorio repo = new LibrosRepositorio();
             if (this._accion == 0){
                 if (repo.Insertar(libro) > 0){
@@ -543,6 +555,34 @@ public class LibrosFrm extends javax.swing.JFrame {
         this.txtTitulo.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        
+        try {
+            
+            String idLibro = Validador.validarTexto(txtIdLibro);    
+            if (idLibro == null){
+                JOptionPane.showMessageDialog(this, "Seleccione un registro en el listado");
+            } else {
+                String strCantidad = JOptionPane.showInputDialog("Ingrese la cantidad de ítems que entran a inventario");
+                int cantidad = Integer.parseInt(strCantidad);
+                if (cantidad <= 0){
+                    throw new Exception();
+                } else {
+                    LibrosRepositorio repo = new LibrosRepositorio();
+                    int result = repo.IngresarInventario(idLibro, cantidad);
+                    if (result > 0){
+                        success();
+                        JOptionPane.showMessageDialog(this, "Se ingresaron " + result + " copias del libro a inventario");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se pudo ingresar la(s) copia(s) en inventario");
+                    }
+                }    
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "La cantidad ingresada no es válida.");
+        }
+    }//GEN-LAST:event_btnInventarioActionPerformed
+
     public static void main(String args[]) {
         
         try {
@@ -570,6 +610,7 @@ public class LibrosFrm extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cmbAutor;
     private javax.swing.JComboBox<String> cmbEditorial;
