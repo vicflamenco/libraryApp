@@ -6,8 +6,8 @@ public class Prestamo {
     
     private int idPrestamo;
     private int idLibro_interno;
-    private int idLibro;
-    private int idUsuario;
+    private String idLibro;
+    private String idUsuario;
     
     private Date fecha_prestamo;
     private Date fecha_expiracion;
@@ -16,9 +16,14 @@ public class Prestamo {
     private Double multa_monto;
     private boolean multa_pagada;
     
-    public Prestamo(int idPrestamo, int idLibro_interno, int idLibro,
-            int idUsuario, Date fecha_prestamo, Date fecha_expiracion,
-            Date fecha_devolucion, Double multa_monto, boolean multa_pagada){
+    private String titulo;
+    private String autor;
+    private double multa_calculada;
+    
+    public Prestamo(int idPrestamo, int idLibro_interno, String idLibro,
+            String idUsuario, Date fecha_prestamo, Date fecha_expiracion,
+            Date fecha_devolucion, double multa_monto, boolean multa_pagada,
+            String titulo, String autor, double multa_calculada){
         
         this.idPrestamo = idPrestamo;
         this.idLibro_interno = idLibro_interno;
@@ -29,7 +34,9 @@ public class Prestamo {
         this.fecha_devolucion = fecha_devolucion;
         this.multa_monto = multa_monto;
         this.multa_pagada = multa_pagada;
-        
+        this.titulo = titulo;
+        this.autor = autor;
+        this.multa_calculada = multa_calculada;   
     }
 
     public int getIdPrestamo() {
@@ -48,19 +55,19 @@ public class Prestamo {
         this.idLibro_interno = idLibro_interno;
     }
 
-    public int getIdLibro() {
+    public String getIdLibro() {
         return idLibro;
     }
 
-    public void setIdLibro(int idLibro) {
+    public void setIdLibro(String idLibro) {
         this.idLibro = idLibro;
     }
 
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -102,5 +109,47 @@ public class Prestamo {
 
     public void setMulta_pagada(boolean multa_pagada) {
         this.multa_pagada = multa_pagada;
+    }
+
+    /**
+     * @return the titulo
+     */
+    public String getTitulo() {
+        return titulo;
+    }
+
+    /**
+     * @param titulo the titulo to set
+     */
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    /**
+     * @return the autor
+     */
+    public String getAutor() {
+        return autor;
+    }
+
+    /**
+     * @param autor the autor to set
+     */
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    /**
+     * @return the multa_calculada
+     */
+    public double getMulta_calculada() {
+        return multa_calculada;
+    }
+
+    /**
+     * @param multa_calculada the multa_calculada to set
+     */
+    public void setMulta_calculada(double multa_calculada) {
+        this.multa_calculada = multa_calculada;
     }
 }
