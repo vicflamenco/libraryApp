@@ -25,7 +25,8 @@ public class ReservasFrm extends javax.swing.JFrame {
         btnEfectuarPrestamo = new javax.swing.JButton();
         btnCancelarReserva = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Administración de reservas");
 
         tblReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -42,7 +43,7 @@ public class ReservasFrm extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, false, false, true, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -216,12 +217,10 @@ public class ReservasFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ReservasFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ReservasFrm frm = new ReservasFrm();
-                frm.setVisible(true);
-                frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            LibrosFrm frm = new LibrosFrm();
+            frm.setVisible(true);
+            frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         });
     }
 

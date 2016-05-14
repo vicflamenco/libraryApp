@@ -21,7 +21,7 @@ public class LibrosFrm extends javax.swing.JFrame {
     
     public LibrosFrm() {
         initComponents();
-        setLocationRelativeTo(null);
+        super.setLocationRelativeTo(null);
         initData();
     }
 
@@ -63,6 +63,7 @@ public class LibrosFrm extends javax.swing.JFrame {
         btnInventario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Mantenimiento de libros");
 
         tblLibros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -596,12 +597,10 @@ public class LibrosFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LibrosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                LibrosFrm frm = new LibrosFrm();
-                frm.setVisible(true);
-                frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            LibrosFrm frm = new LibrosFrm();
+            frm.setVisible(true);
+            frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         });
     }
 

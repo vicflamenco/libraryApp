@@ -30,7 +30,7 @@ public class UsuarioFrm extends javax.swing.JFrame {
      */
     public UsuarioFrm() {
         initComponents();
-        setLocationRelativeTo(null);
+        super.setLocationRelativeTo(null);
         model = new BeanTableModel<Usuario>(Usuario.class);
         usuariosRepo = new UsuariosRepositorio();
         

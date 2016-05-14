@@ -1,9 +1,7 @@
 package Vistas.Mantenimientos;
 
 import DAL.PrestamosRepositorio;
-import DAL.ReservasRepositorio;
 import Modelos.Prestamo;
-import Modelos.Reserva;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -28,7 +26,8 @@ public class PrestamosFrm extends javax.swing.JFrame {
         btnDevolución = new javax.swing.JButton();
         btnEfectuarPago = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Administración de préstamos");
 
         tblPrestamos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -224,12 +223,10 @@ public class PrestamosFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PrestamosFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PrestamosFrm frm = new PrestamosFrm();
-                frm.setVisible(true);
-                frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            //PrestamosFrm frm = new PrestamosFrm();
+            //frm.setVisible(true);
+            //frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         });
     }
 

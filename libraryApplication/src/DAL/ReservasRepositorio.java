@@ -1,6 +1,5 @@
 package DAL;
 
-import Modelos.Prestamo;
 import Modelos.Reserva;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -28,7 +27,6 @@ public class ReservasRepositorio {
                             + " INNER JOIN libro l on l.idLibro = r.idLibro"
                             + " INNER JOIN editorial e on e.idEditorial = l.idEditorial"
                             + " INNER JOIN autor a on a.idAutor = l.idAutor"
-                            + " WHERE idUsuario='vicflamenco' "
                             + " AND fecha_expiracion > '" + currentDateTime + "';";
             
             Statement stmt = this._persistencia.obtenerSentencia();

@@ -3,6 +3,7 @@ package Vistas.Mantenimientos;
 import DAL.AutoresRepositorio;
 import Modelos.Autor;
 import Util.Validador;
+import Vistas.MainForm;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -13,9 +14,10 @@ public class AutoresFrm extends javax.swing.JFrame {
     
     private int _accion = -1; // 0-> agregar, 1-> editar
     
-    public AutoresFrm() {
+    public AutoresFrm(MainForm mainForm) {
         initComponents();
-        setLocationRelativeTo(null);
+        super.setLocationRelativeTo(null);
+        
         initData();
     }
 
@@ -48,6 +50,7 @@ public class AutoresFrm extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Mantenimiento de autores");
 
         tblAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -413,12 +416,6 @@ public class AutoresFrm extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AutoresFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
-        java.awt.EventQueue.invokeLater(() -> {
-            AutoresFrm frm = new AutoresFrm();
-            frm.setVisible(true);
-            frm.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
